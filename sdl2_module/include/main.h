@@ -1,28 +1,43 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
+//Screen dimension constants
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-//初始化我们将要渲染的窗口
-SDL_Window* gWindow = NULL;
-
-//The surface contained by the window
-//窗口包含的surface
-SDL_Surface* gScreenSurface = NULL;
-
-//我们将会载入并在屏幕上展示的图片
-SDL_Surface* gHelloWorld = NULL;
-
-
 //Starts up SDL and creates window
-//函数功能：初始化SDL并创建窗口
-int init();
+bool init();
 
 //Loads media
-//函数功能：加载多媒体文件
-int loadMedia();
+bool loadMedia();
 
 //Frees media and shuts down SDL
-//函数功能：释放多媒体文件并关闭SDL
-void closeall();
+void closeAll();
+
+//Display the dead cells
+int dead(int row, int col);
+
+//Display the alive cells
+int alive(int row, int col);
+
+//Judge the next round of life
+int judgeNext(int neighbor, int row, int col, int** board);
+
+//Loads individual image as texture
+SDL_Texture* loadTexture( char *path );
+
+//The window we'll be rendering to
+SDL_Window* gWindow = NULL;
+
+//The window renderer
+SDL_Renderer* gRenderer = NULL;
+
+//Current displayed texture
+SDL_Texture* gTexture = NULL;
+
+//Current displayed rectangle
+SDL_Rect fillRect;
+
+//Current displayed rectangle border
+SDL_Rect outlineRect;
+

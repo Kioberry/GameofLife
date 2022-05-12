@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/xieberry/Projects/sdl2_demo'
+gcc -Wall -c -I/usr/include src/main.c -O main.o
+gcc main.o -lSDL2 -lSDL2_image -Wl,-rpath=/usr/local/lib -o rendering
+make: Leaving directory '/home/xieberry/Projects/sdl2_demo'
+ 
