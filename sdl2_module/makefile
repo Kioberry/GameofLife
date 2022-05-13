@@ -1,34 +1,38 @@
-vpath %.c src
-SDL_LIB = -lSDL2 -lSDL2_image -Wl,-rpath=/usr/local/lib
-SDL_INCLUDE = -I/usr/include
+
+# code details
+
+EXE_DIR = .
+EXE = $(EXE_DIR)/rendering
+
+SRC= main.c game.c
+
 # generic build details
 
-CC = gcc
-CFLAGS = -Wall -c $(SDL_INCLUDE)
-LDFLAGS = $(SDL_LIB)
-EXE = rendering
-
-OBJ = main.o
-SRC= main.c
+CC =     gcc
+CFLAGS = -Wall -O
+LIBS =   -lSDL2 -lSDL2_image
 
 # compile to  object code
 
+OBJ= $(SRC:.c=.o)
 
-all: $(EXE)
+.c.o:
+	$(CC) $(CFLAGS) -c -o $@ $< 
 
 # build executable
 
 $(EXE): $(OBJ)
-	$(CC) $< $(LDFLAGS) -o $@
-	
-
-# dependencies
-
-$(OBJ):  $(SRC)
-	$(CC) $(CFLAGS) $< -O $@
+	$(CC) $(OBJ) -o $(EXE) $(LIBS)
 
 # clean up compilation
 
 clean:
-	rm -f $(OBJ) $(EXE)  
+	rm -f $(OBJ) $(EXE)
+
+# dependencies
+
+main.o:  main.c controlFunctions.h
+game.o:  game.c gameData.h gameFunctions.h
+
+
 
