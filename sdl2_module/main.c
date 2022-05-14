@@ -1,10 +1,16 @@
+#include <stdio.h>
 #include <stdbool.h>
 #include <SDL2/SDL.h>
+#include <malloc.h>
 #include "controlFunctions.h"
+
 /*problem: have to add a white image to be the background to prevent random error.*/
 int main(int argc, char *args[])
 {
     int count = 0;
+    bool quit = false;
+    SDL_Event event;
+    char filename1[50] = "state.txt";
     if (argc == 2)
     {
         count = atoi(args[1]);
@@ -22,10 +28,10 @@ int main(int argc, char *args[])
                 return -1;
             }
             initchess();
-            SDL_Delay(2000);
+            SDL_Delay(3000);
 
             int i = 0;
-            for (i=0; i<count; i++)
+            while (i < 3)
             {
                 if (!judgeNext())
                 {
@@ -34,9 +40,9 @@ int main(int argc, char *args[])
                     break;
                 }
                 chess();
-                SDL_Delay(2000);
+                SDL_Delay(3000);
+                i++;
             }
-
         }
     }
     if (argc == 1)
@@ -62,10 +68,20 @@ int main(int argc, char *args[])
             SDL_Delay(2000);
         }
     }
-    save("state.txt");
+
+    while (!quit)
+    {
+        SDL_WaitEvent(&event);
+
+        switch (event.type)
+        {
+        case SDL_QUIT:
+            quit = true;
+            break;
+        }
+    }
+    save(filename1);
     closeAll();
-    // SDL_Event event;
-    // bool quit;
 
     return 0;
 }

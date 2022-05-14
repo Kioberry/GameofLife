@@ -9,7 +9,6 @@
 #include "controlFunctions.h"
 
 
-
 bool init()
 {
 
@@ -53,28 +52,8 @@ bool init()
 				SDL_RenderClear(gRenderer);
 				SDL_RenderPresent(gRenderer);
 
-				int i = 0, j = 0;
-				Maxrow = 5;
-				Maxcol = 5;
-				// init the world
-				orgn = (int **)malloc(Maxrow * sizeof(int *));
-				ret = (int **)malloc(Maxrow * sizeof(int *));
-				for (i = 0; i < Maxrow; i++)
-				{
-					orgn[i] = (int *)malloc(sizeof(int) * Maxcol);
-					ret[i] = (int *)malloc(sizeof(int) * Maxcol);
-					for (j = 0; j < Maxcol; j++)
-					{
-						orgn[i][j] = 0;
-						ret[i][j] = 0;
-					}
-				}
-				orgn[0][1] = 1;
-				orgn[0][3] = 1;
-				orgn[1][2] = 1;
-				orgn[1][4] = 1;
-				orgn[2][1] = 1;
-				orgn[2][2] = 1;
+				char filename[50] = "initstate.txt";
+				load(filename);
 
 			}
 		}
@@ -86,7 +65,7 @@ bool init()
 void closeAll()
 {
 	int i;
-	//Free the dynamic arrays
+	// Free the dynamic arrays
 	for (i = 0; i < Maxcol; i++)
 	{
 		free(orgn[i]);
@@ -106,7 +85,7 @@ void closeAll()
 	gRenderer = NULL;
 
 	// Quit SDL subsystems
-	IMG_Quit();
+	// IMG_Quit();
 	atexit(SDL_Quit);
 }
 
@@ -115,21 +94,13 @@ int dead(int row, int col)
 {
 	if (row >= 0 && row < Maxrow && col >= 0 && col < Maxcol)
 	{
-		fillRect.x = 100 + row * 17;
-		fillRect.y = 100 + col * 17;
-		fillRect.w = 16;
-		fillRect.h = 16;
-		//渲染红色填充四边形
+		fillRect.x = SCREEN_WIDTH / Maxcol * col;
+		fillRect.y = BUTTON_AREA + (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow * row;
+		fillRect.w = SCREEN_WIDTH / Maxcol;
+		fillRect.h = (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow;
+		// Rendering white to fill the rectangle
 		SDL_SetRenderDrawColor(gRenderer, 0xff, 0xff, 0xff, 0xff);
 		SDL_RenderFillRect(gRenderer, &fillRect);
-		outlineRect.x = 99 + row * 17;
-		outlineRect.y = 99 + col * 17;
-		outlineRect.w = 17;
-		outlineRect.h = 17;
-		//渲染grey轮廓的四边形
-		SDL_RenderSetScale(gRenderer, scale, scale);
-		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
-		SDL_RenderDrawRect(gRenderer, &outlineRect);
 		return 0;
 	}
 	else
@@ -143,21 +114,13 @@ int alive(int row, int col)
 {
 	if (row >= 0 && row < Maxrow && col >= 0 && col < Maxcol)
 	{
-		fillRect.x = 100 + row * 17;
-		fillRect.y = 100 + col * 17;
-		fillRect.w = 16;
-		fillRect.h = 16;
-		//渲染红色填充四边形
+		fillRect.x = SCREEN_WIDTH / Maxcol * col;
+		fillRect.y = BUTTON_AREA + (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow * row;
+		fillRect.w = SCREEN_WIDTH / Maxcol;
+		fillRect.h = (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow;
+		// Rendering  to fill the rectangle
 		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
 		SDL_RenderFillRect(gRenderer, &fillRect);
-		outlineRect.x = 99 + row * 17;
-		outlineRect.y = 99 + col * 17;
-		outlineRect.w = 17;
-		outlineRect.h = 17;
-		//渲染grey轮廓的四边形
-		SDL_RenderSetScale(gRenderer, scale, scale);
-		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
-		SDL_RenderDrawRect(gRenderer, &outlineRect);
 		return 0;
 	}
 	else
@@ -168,7 +131,7 @@ int alive(int row, int col)
 
 int initchess()
 {
-	int i, j, row, col;
+	int i, j, row, col, hor_y, ver_x;
 	int count = 0;
 	for (row = 0; row != Maxrow; row++)
 	{
@@ -181,6 +144,7 @@ int initchess()
 			}
 		}
 	}
+
 	for (i = 0; i < Maxrow; i++)
 	{
 		for (j = 0; j < Maxcol; j++)
@@ -196,6 +160,20 @@ int initchess()
 			}
 		}
 	}
+
+	// draw the outline
+	for (i = 0; i <= Maxrow; i++)
+	{
+		hor_y = BUTTON_AREA + (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow * i;
+		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
+		SDL_RenderDrawLine(gRenderer, 0, hor_y, SCREEN_WIDTH, hor_y);
+	}
+	for (j = 0; j <= Maxcol; j++)
+	{
+		ver_x = SCREEN_WIDTH / Maxcol * j;
+		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
+		SDL_RenderDrawLine(gRenderer, ver_x, BUTTON_AREA, ver_x, SCREEN_HEIGHT);
+	}
 	// Update screen
 	SDL_RenderPresent(gRenderer);
 	if (count == 0)
@@ -209,7 +187,7 @@ int initchess()
 
 int chess()
 {
-	int i, j, row, col;
+	int i, j, row, col, hor_y, ver_x;
 	for (row = 0; row != Maxrow; row++)
 	{
 		for (col = 0; col != Maxcol; col++)
@@ -221,6 +199,7 @@ int chess()
 			}
 		}
 	}
+
 	for (i = 0; i < Maxrow; i++)
 	{
 		for (j = 0; j < Maxcol; j++)
@@ -234,6 +213,20 @@ int chess()
 				alive(i, j);
 			}
 		}
+	}
+
+	// draw the outline
+	for (i = 0; i <= Maxrow; i++)
+	{
+		hor_y = BUTTON_AREA + (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow * i;
+		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
+		SDL_RenderDrawLine(gRenderer, 0, hor_y, SCREEN_WIDTH, hor_y);
+	}
+	for (j = 0; j <= Maxcol; j++)
+	{
+		ver_x = SCREEN_WIDTH / Maxcol * j;
+		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
+		SDL_RenderDrawLine(gRenderer, ver_x, BUTTON_AREA, ver_x, SCREEN_HEIGHT);
 	}
 	// Update screen
 	SDL_RenderPresent(gRenderer);
@@ -303,42 +296,74 @@ bool judgeNext()
 	return isFlag;
 }
 
+int load(char filename[50])
+{
+	FILE *fp = fopen(filename, "r");
+	int i, j, temp1, temp2;
 
-int load(char filename[50]) {
-	FILE* fp = fopen(filename, "r");
-	int i, j;
-	char c = '\n';
-	if (fp == NULL) {
+	if (fp == NULL)
+	{
 		printf("Sorry, the file doesn't exist.");
 		return -1;
 	}
-	else {
-		for (i = 0; i < Maxrow; i++) {
-			for (j = 0; j < Maxcol; j++) {
-				fscanf(fp, "%d  ", &orgn[i][j]);
-				//printf("%d", orgn[i][j]);
+	else
+	{
+		if (fscanf(fp, "%d%d", &temp1, &temp2) == 2)
+		{
+			Maxrow = temp1;
+			Maxcol = temp2;
+			orgn = (int **)malloc(Maxrow * sizeof(int *));
+			ret = (int **)malloc(Maxrow * sizeof(int *));
+			for (i = 0; i < Maxrow; i++)
+			{
+				orgn[i] = (int *)malloc(sizeof(int) * Maxcol);
+				ret[i] = (int *)malloc(sizeof(int) * Maxcol);
+				for (j = 0; j < Maxcol; j++)
+				{
+					orgn[i][j] = 0;
+					ret[i][j] = 0;
+				}
 			}
-			fscanf(fp, "%c", &c);
-			//printf("%c", c);
+		}
+		for (i = 0; i < Maxrow; i++)
+		{
+			for (j = 0; j < Maxcol; j++)
+			{
+				if (fscanf(fp, "%d  ", &temp1) == 1)
+				{
+					orgn[i][j] = temp1;
+				}
+			}
 		}
 	}
+	fclose(fp);
 	return 0;
 }
 
-int  save(char filename[50]) {
+int save(char filename[50])
+{
 	char c = '\n';
-	FILE* fp = fopen(filename, "w");
-	if (fp == NULL) {
+	FILE *fp = fopen(filename, "w");
+	if (fp == NULL)
+	{
 		printf("Sorry, the file doesn't exist.");
 		return -1;
 	}
 	int i, j;
-	for (i = 0; i < Maxrow; i++) {
-		for (j = 0; j < Maxcol; j++) {
+	fprintf(fp, "%d%c", Maxrow, c);
+	fprintf(fp, "%d%c", Maxcol, c);	
+	for (i = 0; i < Maxrow; i++)
+	{
+		for (j = 0; j < Maxcol; j++)
+		{
 			fprintf(fp, "%d  ", ret[i][j]);
 		}
 		fprintf(fp, "%c", c);
 	}
 	fclose(fp);
 	return 0;
+}
+
+void gameover()
+{
 }
