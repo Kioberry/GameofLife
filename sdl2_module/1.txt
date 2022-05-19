@@ -1,0 +1,27 @@
+ for (row = 0; row < Maxrow; row++){
+            for (col = 0; col < Maxcol; col++){
+                int neighbor = 0, c, r;
+                for (r = row - 1; r <= row + 1; r++)
+                    for (c = col - 1; c <= col + 1; c++){
+                        if (r < 0 || r >= Maxrow) continue;
+                        if (c < 0 || c >= Maxcol) continue;
+                        if (orgn[r][c] == 1) neighbor++;
+                    }
+                if (orgn[i][j] == 1)
+                    neighbor--;
+                ret[row][col] = judgeNext(neighbor, row, col);
+            }
+        }
+
+
+while (!quit)
+            {
+                SDL_WaitEvent(&event);
+
+                switch (event.type)
+                {
+                case SDL_QUIT:
+                    quit = true;
+                    break;
+                }
+            }

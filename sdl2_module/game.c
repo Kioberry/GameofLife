@@ -8,7 +8,6 @@
 #include "gameFunctions.h"
 #include "controlFunctions.h"
 
-
 bool init()
 {
 
@@ -47,14 +46,7 @@ bool init()
 			}
 			else
 			{
-				// Initialize renderer color
-				SDL_SetRenderDrawColor(gRenderer, 0xff, 0xff, 0xff, 0xff);
-				SDL_RenderClear(gRenderer);
-				SDL_RenderPresent(gRenderer);
-
-				char filename[50] = "initstate.txt";
-				load(filename);
-
+				gameState = START;
 			}
 		}
 	}
@@ -84,8 +76,6 @@ void closeAll()
 	gWindow = NULL;
 	gRenderer = NULL;
 
-	// Quit SDL subsystems
-	// IMG_Quit();
 	atexit(SDL_Quit);
 }
 
@@ -174,8 +164,6 @@ int initchess()
 		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
 		SDL_RenderDrawLine(gRenderer, ver_x, BUTTON_AREA, ver_x, SCREEN_HEIGHT);
 	}
-	// Update screen
-	SDL_RenderPresent(gRenderer);
 	if (count == 0)
 	{
 		printf("Sorry that your last game has over because all cells have died.\n");
@@ -228,8 +216,6 @@ int chess()
 		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
 		SDL_RenderDrawLine(gRenderer, ver_x, BUTTON_AREA, ver_x, SCREEN_HEIGHT);
 	}
-	// Update screen
-	SDL_RenderPresent(gRenderer);
 	return 0;
 }
 
@@ -351,7 +337,7 @@ int save(char filename[50])
 	}
 	int i, j;
 	fprintf(fp, "%d%c", Maxrow, c);
-	fprintf(fp, "%d%c", Maxcol, c);	
+	fprintf(fp, "%d%c", Maxcol, c);
 	for (i = 0; i < Maxrow; i++)
 	{
 		for (j = 0; j < Maxcol; j++)
@@ -364,6 +350,103 @@ int save(char filename[50])
 	return 0;
 }
 
-void gameover()
+void draw()
 {
+	// Initialize renderer color
+	SDL_SetRenderDrawColor(gRenderer, 0xff, 0xff, 0xff, 0xff);
+	SDL_RenderClear(gRenderer);
+
+	switch (gameState)
+	{
+	case START:
+		SDL_SetRenderDrawColor(gRenderer, 0x00, 0xFF, 0x00, 0xFF);
+		SDL_Rect tempRect = {0,0, SCREEN_WIDTH, SCREEN_HEIGHT};
+		SDL_RenderFillRect(gRenderer, &tempRect);
+		// imageSurface = SDL_LoadBMP("start_game.bmp");
+		// if (!imageSurface)
+		// {
+		// 	fprintf(fp, "Cannot open start_game.bmp!\n");
+		// 	exit(1);
+		// }
+		// imageTexture = SDL_CreateTextureFromSurface(renderer, imageSurface);
+		// SDL_FreeSurface(imageSurface);
+		// imageSurface = NULL;
+		// SDL_RenderCopy(renderer, imageTexture, NULL, NULL);
+		break;
+	case FIRST:
+		initchess();
+		break;
+	case PLAYING:
+		// if (!ifinit)
+		// {
+		// 	initchess();
+		// 	ifinit = true;
+		// }
+		//else
+		{
+			if (!judgeNext())
+			{
+				printf("The state of the cells won't change anymore, the program will terminate.\n");
+				return;
+			}
+			chess();
+		}
+		break;
+	case OVER:
+		break;
+	}
+
+	// Update screen
+	SDL_RenderPresent(gRenderer);
+}
+
+void eventLoop()
+{
+	while (true)
+	{
+		SDL_Event event;
+
+		int begin = SDL_GetTicks();
+
+		while (SDL_PollEvent(&event))
+		{
+			switch (event.type)
+			{
+			case SDL_QUIT:
+				// destroy all
+				return;
+
+			case SDL_MOUSEBUTTONDOWN:
+				if (gameState == START)
+				{
+					char filename[50] = "initstate.txt";
+					load(filename);
+					gameState = FIRST;
+				}
+				if (gameState == FIRST){
+					gameState = PLAYING;
+				}
+				break;
+
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym)
+				{
+				case SDLK_ESCAPE:
+					// destroy all
+					return;
+				}
+			}
+		}
+		draw();
+
+		int end = SDL_GetTicks();
+		int time_ = end - begin;
+		int rate = 1000 / FRAMERATE;
+		int delay = rate - time_;
+
+		if (delay > 0)
+		{
+			SDL_Delay(delay);
+		}
+	}
 }

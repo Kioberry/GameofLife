@@ -8,8 +8,6 @@
 int main(int argc, char *args[])
 {
     int count = 0;
-    bool quit = false;
-    SDL_Event event;
     char filename1[50] = "state.txt";
     if (argc == 2)
     {
@@ -47,39 +45,14 @@ int main(int argc, char *args[])
     }
     if (argc == 1)
     {
-        printf("The program will keep evolving until it is terminate\n");
         if (!init())
         {
             printf("Failed to initialize!\n");
             return -1;
         }
-        initchess();
-        SDL_Delay(2000);
-
-        while (true)
-        {
-            if (!judgeNext())
-            {
-                printf("The state of the cells won't change anymore, the program will terminate.\n");
-                SDL_Delay(1500);
-                break;
-            }
-            chess();
-            SDL_Delay(2000);
-        }
+        eventLoop();
     }
 
-    while (!quit)
-    {
-        SDL_WaitEvent(&event);
-
-        switch (event.type)
-        {
-        case SDL_QUIT:
-            quit = true;
-            break;
-        }
-    }
     save(filename1);
     closeAll();
 
