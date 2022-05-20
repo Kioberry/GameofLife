@@ -1,5 +1,0 @@
-/home/xieberry/Projects/sdl2_demo/build/CMakeFiles/SDL2_DEMO.dir
-/home/xieberry/Projects/sdl2_demo/build/CMakeFiles/package.dir
-/home/xieberry/Projects/sdl2_demo/build/CMakeFiles/package_source.dir
-/home/xieberry/Projects/sdl2_demo/build/CMakeFiles/edit_cache.dir
-/home/xieberry/Projects/sdl2_demo/build/CMakeFiles/rebuild_cache.dir

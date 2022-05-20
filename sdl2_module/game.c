@@ -1,4 +1,3 @@
-
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
@@ -79,6 +78,22 @@ void closeAll()
 	atexit(SDL_Quit);
 }
 
+void drawOutline(int ver_x, int hor_y){
+	int i, j;
+	// draw the outline
+	for (i = 0; i <= Maxrow; i++)
+	{
+		hor_y = BUTTON_AREA + (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow * i;
+		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
+		SDL_RenderDrawLine(gRenderer, 0, hor_y, SCREEN_WIDTH, hor_y);
+	}
+	for (j = 0; j <= Maxcol; j++)
+	{
+		ver_x = SCREEN_WIDTH / Maxcol * j;
+		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
+		SDL_RenderDrawLine(gRenderer, ver_x, BUTTON_AREA, ver_x, SCREEN_HEIGHT);
+	}
+}
 // Display the dead cells
 int dead(int row, int col)
 {
@@ -121,7 +136,7 @@ int alive(int row, int col)
 
 int initchess()
 {
-	int i, j, row, col, hor_y, ver_x;
+	int i, j, row, col, hor_y = 0, ver_x = 0;
 	int count = 0;
 	for (row = 0; row != Maxrow; row++)
 	{
@@ -152,30 +167,13 @@ int initchess()
 	}
 
 	// draw the outline
-	for (i = 0; i <= Maxrow; i++)
-	{
-		hor_y = BUTTON_AREA + (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow * i;
-		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
-		SDL_RenderDrawLine(gRenderer, 0, hor_y, SCREEN_WIDTH, hor_y);
-	}
-	for (j = 0; j <= Maxcol; j++)
-	{
-		ver_x = SCREEN_WIDTH / Maxcol * j;
-		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
-		SDL_RenderDrawLine(gRenderer, ver_x, BUTTON_AREA, ver_x, SCREEN_HEIGHT);
-	}
-	if (count == 0)
-	{
-		printf("Sorry that your last game has over because all cells have died.\n");
-		printf("We will restart the game for you.\n");
-		return 1;
-	}
+	drawOutline(ver_x, hor_y);
 	return 0;
 }
 
 int chess()
 {
-	int i, j, row, col, hor_y, ver_x;
+	int i, j, row, col, hor_y = 0, ver_x = 0;
 	for (row = 0; row != Maxrow; row++)
 	{
 		for (col = 0; col != Maxcol; col++)
@@ -203,19 +201,8 @@ int chess()
 		}
 	}
 
-	// draw the outline
-	for (i = 0; i <= Maxrow; i++)
-	{
-		hor_y = BUTTON_AREA + (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow * i;
-		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
-		SDL_RenderDrawLine(gRenderer, 0, hor_y, SCREEN_WIDTH, hor_y);
-	}
-	for (j = 0; j <= Maxcol; j++)
-	{
-		ver_x = SCREEN_WIDTH / Maxcol * j;
-		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
-		SDL_RenderDrawLine(gRenderer, ver_x, BUTTON_AREA, ver_x, SCREEN_HEIGHT);
-	}
+	drawOutline(ver_x, hor_y);
+	
 	return 0;
 }
 
@@ -235,7 +222,7 @@ int Adjacent(int neighbor, int row, int col, int **board)
 	}
 }
 
-bool judgeNext()
+bool judgeNext(int** orgn, int** ret)
 {
 	bool isFlag = false;
 	int row, col, i, j;
@@ -350,8 +337,58 @@ int save(char filename[50])
 	return 0;
 }
 
+int whetherClick()
+{
+	int num = 0;
+	char str[20] = {'\0'};
+	printf("Choose one way to initialize the world:\n");
+	printf("1.Default Mode\n");
+	printf("2.CLick to initialize\n");
+	printf("Option: ");
+	if (scanf("%s", str) == 1)
+	{
+		num = atoi(str);
+		if (num == 1 || num == 2)
+		{
+			return num;
+		}
+		else
+		{
+			printf("Invalid unput.\n");
+			return -1;
+		}
+	}
+	return 0;
+}
+
+void MouseClick(int** uorgn, int Mousex, int Mousey)
+{
+	int row, col, ver_x = 0, hor_y = 0;
+	for (row = 0; row < Maxrow; row++)
+	{
+		for (col = 0; col < Maxcol; col++)
+		{
+			if (Mousex >= SCREEN_WIDTH / Maxcol * col && Mousex < SCREEN_WIDTH / Maxcol * (col + 1))
+			{
+				if (Mousey >= BUTTON_AREA + (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow * row && Mousey < BUTTON_AREA + (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow * (row + 1))
+				{
+					uorgn[row][col] = 1;
+					alive(row, col);
+				}
+			}
+		}
+	}
+	drawOutline(ver_x, hor_y);
+	if (Mousey>=0 && Mousey<BUTTON_AREA){
+		gameState = UPLAYING;
+		return;
+	}
+}
+
 void draw()
 {
+	int chosen = 0;
+	int** uorgn = NULL;
 	// Initialize renderer color
 	SDL_SetRenderDrawColor(gRenderer, 0xff, 0xff, 0xff, 0xff);
 	SDL_RenderClear(gRenderer);
@@ -359,40 +396,75 @@ void draw()
 	switch (gameState)
 	{
 	case START:
-		SDL_SetRenderDrawColor(gRenderer, 0x00, 0xFF, 0x00, 0xFF);
-		SDL_Rect tempRect = {0,0, SCREEN_WIDTH, SCREEN_HEIGHT};
-		SDL_RenderFillRect(gRenderer, &tempRect);
-		// imageSurface = SDL_LoadBMP("start_game.bmp");
-		// if (!imageSurface)
-		// {
-		// 	fprintf(fp, "Cannot open start_game.bmp!\n");
-		// 	exit(1);
-		// }
-		// imageTexture = SDL_CreateTextureFromSurface(renderer, imageSurface);
-		// SDL_FreeSurface(imageSurface);
-		// imageSurface = NULL;
-		// SDL_RenderCopy(renderer, imageTexture, NULL, NULL);
+		SDL_Rect destRect1 = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+		SDL_RenderFillRect(gRenderer, &destRect1);
+		gTexture = IMG_LoadTexture(gRenderer, START_FILE_NAME);
+		SDL_RenderCopy(gRenderer, gTexture, NULL, &destRect1);
 		break;
+	case MODE:
+		chosen = whetherClick();
+		if (chosen == -1)
+		{
+			printf("The game will terminate\n");
+			exit(1);
+		}
+		else
+		{
+			// switch (chosen)
+			// {
+			// case 1:
+			// 	gameState = FIRST;
+			// 	break;
+			// case 2:
+			// 	int i, j;
+			// 	gameState = UFIRST;
+			// 	// initialise the orginal array again
+			// 	uorgn = (int **)malloc(Maxrow * sizeof(int *));
+			// 	for (i = 0; i < Maxrow; i++)
+			// 	{
+			// 		uorgn[i] = (int *)malloc(sizeof(int) * Maxcol);
+			// 		for (j = 0; j < Maxcol; j++)
+			// 		{
+			// 			uorgn[i][j] = 0;
+			// 		}
+			// 	}
+			// 	break;
+			// }
+		}
 	case FIRST:
 		initchess();
+		gameState = PLAYING;
 		break;
+	case UFIRST:
+		MouseClick(uorgn,Mousex,Mousey);
 	case PLAYING:
-		// if (!ifinit)
-		// {
-		// 	initchess();
-		// 	ifinit = true;
-		// }
-		//else
+		if (!judgeNext(orgn, ret))
 		{
-			if (!judgeNext())
-			{
-				printf("The state of the cells won't change anymore, the program will terminate.\n");
-				return;
-			}
-			chess();
+			printf("The state of the cells won't change anymore, the program will terminate.\n");
+			gameState = OVER;
+			return;
 		}
+		chess();
 		break;
+	case UPLAYING:
+		if (!judgeNext(uorgn, ret))
+		{
+			printf("The state of the cells won't change anymore, the program will terminate.\n");
+			gameState = OVER;
+			return;
+		}
+		chess();
+		break;	
 	case OVER:
+		if (gTexture != NULL)
+		{
+			SDL_DestroyTexture(gTexture);
+			gTexture = NULL;
+		}
+		SDL_Rect destRect2 = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+		SDL_RenderFillRect(gRenderer, &destRect2);
+		gTexture = IMG_LoadTexture(gRenderer, OVER_FILE_NAME);
+		SDL_RenderCopy(gRenderer, gTexture, NULL, &destRect2);
 		break;
 	}
 
@@ -421,10 +493,12 @@ void eventLoop()
 				{
 					char filename[50] = "initstate.txt";
 					load(filename);
-					gameState = FIRST;
+					gameState = MODE;
 				}
-				if (gameState == FIRST){
-					gameState = PLAYING;
+				if (gameState == UFIRST)
+				{
+					Mousex = event.button.x;
+					Mousey = event.button.y;
 				}
 				break;
 

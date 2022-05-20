@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/xieberry/Projects/sdl2_demo/build",
-  "command": "/usr/bin/gcc   -g -o CMakeFiles/SDL2_DEMO.dir/src/main.c.o -c /home/xieberry/Projects/sdl2_demo/src/main.c",
-  "file": "/home/xieberry/Projects/sdl2_demo/src/main.c"
-}
-]

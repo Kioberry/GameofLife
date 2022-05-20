@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu May 19 22:56:17 2022
+# Make data base, printed on Fri May 20 14:22:44 2022
 
 # Variables
 
@@ -18,12 +18,10 @@ OBJ = $(SRC:.c=.o)
 GDK_BACKEND = x11
 # environment
 LC_ALL = C
-# environment
-NO_AT_BRIDGE = 1
-# environment
-GNOME_SHELL_SESSION_MODE = ubuntu
 # makefile (from 'makefile', line 7)
 SRC = main.c game.c
+# environment
+GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
 SSH_AGENT_LAUNCHER = gnome-keyring
 # environment
@@ -31,7 +29,7 @@ SNAP_INSTANCE_KEY =
 # environment
 GJS_DEBUG_OUTPUT = stderr
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-aa7016b4-602c-4331-b2fd-c40d55276edb.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-8bcb6adc-67a3-4f0c-9419-ec14ba396314.sock
 # environment
 LC_NAME = zh_CN.UTF-8
 # environment
@@ -61,7 +59,8 @@ PWD = /home/xieberry/Projects/sdl2_demo
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
-XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop:/opt/apps/com.qq.im.deepin/entries:/opt/apps/com.qq.weixin.deepin/entries
+ 
+XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop:/opt/apps/com.qq.im.deepin/entries:/opt/apps/com.qq.weixin.deepin/entries:/opt/apps/com.qq.im.deepin/entries:/opt/apps/com.qq.weixin.deepin/entries
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
@@ -73,7 +72,7 @@ VSCODE_CODE_CACHE_PATH = /home/xieberry/.config/Code/CachedData/c3511e6c69bb3901
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.5CADM1
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.E62LM1
 # default
 .LOADED := 
 # default
@@ -113,7 +112,7 @@ SNAP_REEXEC =
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 4713
+VSCODE_PID = 4526
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
@@ -121,7 +120,7 @@ XDG_SESSION_TYPE = wayland
 # environment
 BAMF_DESKTOP_FILE_HINT = /var/lib/snapd/desktop/applications/code_code.desktop
 # environment
-SESSION_MANAGER = local/xieberry-virtual-machine:@/tmp/.ICE-unix/1232,unix/xieberry-virtual-machine:/tmp/.ICE-unix/1232
+SESSION_MANAGER = local/xieberry-virtual-machine:@/tmp/.ICE-unix/1252,unix/xieberry-virtual-machine:/tmp/.ICE-unix/1252
 # automatic
 *F = $(notdir $*)
 # environment
@@ -171,7 +170,7 @@ LC_TIME = zh_CN.UTF-8
 # environment
 SNAP = /snap/code/97
 # environment
-INVOCATION_ID = 2fefcc7cf8d147f5b790005e58a87fa2
+INVOCATION_ID = 9e98a71ff9004ef2813708f643579124
 # environment
 SNAP_REVISION = 97
 # environment
@@ -211,7 +210,7 @@ SNAP_ARCH = amd64
 # makefile
 .DEFAULT_GOAL := rendering
 # environment
-SYSTEMD_EXEC_PID = 1254
+SYSTEMD_EXEC_PID = 1274
 # environment
 DISPLAY = :0
 # environment
@@ -227,11 +226,11 @@ SNAP_DATA = /var/snap/code/97
 # environment
 SNAP_CONTEXT = QcfP1MfkKtqMqyWyWwhJfKA9unAgtRH9k_lAed3yQ76WOqVpDGHW
 # environment
-MANAGERPID = 1033
+MANAGERPID = 1085
 # environment
 LC_MEASUREMENT = zh_CN.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 5141
+GIO_LAUNCHED_DESKTOP_FILE_PID = 4421
 # environment
 _ = /snap/code/97/usr/share/code/code
 # environment
@@ -245,7 +244,7 @@ GDK_PIXBUF_MODULE_FILE = /home/xieberry/snap/code/common/.cache/gdk-pixbuf-loade
 # makefile (from 'makefile', line 4)
 EXE_DIR = .
 # environment
-JOURNAL_STREAM = 8:46218
+JOURNAL_STREAM = 8:46733
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -280,7 +279,6 @@ VSCODE_CLI = 1
 ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
 SNAP_COMMON = /var/snap/code/common
- 
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
 # makefile (from 'makefile', line 11)
@@ -296,7 +294,7 @@ LC_IDENTIFICATION = zh_CN.UTF-8
 # environment
 SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
 # variable set hash-table stats:
-# Load=141/1024=14%, Rehash=0, Collisions=14/175=8%
+# Load=140/1024=14%, Rehash=0, Collisions=10/174=6%
 
 # Pattern-specific Variable Values
 
@@ -304,9 +302,9 @@ SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd
 
 # Directories
 
-# . (device 2051, inode 676730): 18 files, no impossibilities.
+# . (device 2051, inode 676730): 15 files, no impossibilities.
 
-# 18 files, no impossibilities in 1 directories.
+# 15 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -340,6 +338,7 @@ clean:
 #  recipe to execute (from 'makefile', line 30):
 	rm -f $(OBJ) $(EXE)
 
+ 
 rendering: main.o game.o
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -406,9 +405,9 @@ game.o: game.c gameData.h gameFunctions.h
 # strcache buffers: 1 (0) / strings = 25 / storage = 220 B / avg = 8 B
 # current buf: size = 8162 B / used = 220 B / count = 25 / avg = 8 B
 
-# strcache performance: lookups = 44 / hit rate = 43%
+# strcache performance: lookups = 41 / hit rate = 39%
 # hash-table stats:
-# Load=25/8192=0%, Rehash=0, Collisions=0/44=0%
-# Finished Make data base on Thu May 19 22:56:17 2022
+# Load=25/8192=0%, Rehash=0, Collisions=0/41=0%
+# Finished Make data base on Fri May 20 14:22:44 2022
 
  

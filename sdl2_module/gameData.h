@@ -1,19 +1,24 @@
 #ifndef _GAME_DATA_
 #define _GAME_DATA_
-#define FRAMERATE 3
+#define FRAMERATE 1
+#define START_FILE_NAME "Game2.png"
+#define OVER_FILE_NAME "OVER.png"
 
 
 
 int Maxrow, Maxcol;
-
+int Mousex, Mousey;
 int** orgn;
 int** ret;
 
 enum GameState
 {
     START,
+    MODE,
     FIRST,
+    UFIRST,
     PLAYING,
+    UPLAYING,
     OVER
 }gameState;
 
@@ -35,5 +40,6 @@ SDL_Texture *gTexture = NULL;
 
 // Current displayed rectangle
 SDL_Rect fillRect;
+
 
 #endif

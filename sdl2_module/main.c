@@ -25,22 +25,7 @@ int main(int argc, char *args[])
                 printf("Failed to initialize!\n");
                 return -1;
             }
-            initchess();
-            SDL_Delay(3000);
-
-            int i = 0;
-            while (i < 3)
-            {
-                if (!judgeNext())
-                {
-                    printf("The state of the cells won't change anymore, the program will terminate.\n");
-                    SDL_Delay(1500);
-                    break;
-                }
-                chess();
-                SDL_Delay(3000);
-                i++;
-            }
+            eventLoop();
         }
     }
     if (argc == 1)
