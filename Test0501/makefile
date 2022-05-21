@@ -2,9 +2,9 @@ vpath %.h include
 vpath %.c src
 vpath %.c unit_test
 
-objects = utility.o game.o test_fun.o 
+objects = game.o test_fun.o 
 test:test_main.c $(objects)
-	gcc -I include $^ -o $@ -lcheck -lsubunit -lm -lpthread
+	gcc -I include $^ -o $@ -lcheck -lsubunit -lm -lpthread -lSDL2 -lSDL2_image
 
 all:$(objects)
 $(objects): %.o : %.c
@@ -12,4 +12,5 @@ $(objects): %.o : %.c
 
 .PHONY:clean
 clean:
-	rm *.o
+	rm -f *.o test
+

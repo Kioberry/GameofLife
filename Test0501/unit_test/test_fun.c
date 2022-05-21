@@ -1,71 +1,144 @@
+#include <string.h>
+#include <malloc.h>
 #include "check.h"
+#include "../include/gameFunctions.h"
 
-#include "../include/alive.h"
-#include "../include/dead.h"  //头文件相对路径
-#include "../include/utility.h" 
-#include "../include/game.h"
-
-#define MAX 5
-
-START_TEST(test_game_alive)
+START_TEST(test_game_alive_dead)
 {
-    fail_unless(alive(1, 2) == 0, "error, alive(1, 2) != 0 over");
-    fail_unless(alive(1, 0) == 0, "error, alive(1, 0) != 0 over");
-    fail_unless(alive(0, 2) == 0, "error, alive(0, 2) != 0 over");
-    fail_unless(alive(0, 0) == 0, "error, alive(0, 0) != 0 over");
-    //如果add(1, 4) == 5的话，就成功，否则输出后面的字符串。
-    fail_unless(alive(-1, -2) == -1, "error, alive(1, 2) != -1 over");
-    fail_unless(alive(MAX, MAX+1) == -1, "error, alive(MAX, MAX+1) != -1 over");
-    //turn the parameter to string
-    fail_unless(alive("ahha", "3") == -1, "error, alive(\"ahha\", \"3\") != -1 over");
+    char msg[50] = {'\0'};
+    /*Tests for the alive(row, col) function*/
+    // satisfactory situations including edge cases
+    strcpy(msg, "error, alive(1, 2) != 0 over");
+    fail_unless(alive(1, 2) == 0, msg);
+    strcpy(msg, "error, alive(1, 0) != 0 over");
+    fail_unless(alive(1, 0) == 0, msg);
+    strcpy(msg, "error, alive(0, 2) != 0 over");
+    fail_unless(alive(0, 2) == 0, msg);
+    strcpy(msg, "error, alive(0, 0) != 0 over");
+    fail_unless(alive(0, 0) == 0, msg);
+    // situations when integers out of bounds
+    strcpy(msg, "error, alive(-1, -2) != -1 over");
+    fail_unless(alive(-1, -2) == -1, msg);
+    strcpy(msg, "error, alive(Maxrow, Maxcol+1) != -1 over");
+    fail_unless(alive(Maxrow, Maxcol + 1) == -1, msg);
+
+    /*Tests for the dead(row, col) function*/
+    // satisfactory situations including edge cases
+    strcpy(msg, "error, dead(1, 2) != 0 over");
+    fail_unless(dead(1, 2) == 0, msg);
+    strcpy(msg, "error, dead(1, 0) != 0 over");
+    fail_unless(dead(1, 0) == 0, msg);
+    strcpy(msg, "error, dead(0, 2) != 0 over");
+    fail_unless(dead(0, 2) == 0, msg);
+    strcpy(msg, "error, dead(0, 0) != 0 over");
+    fail_unless(dead(0, 0) == 0, msg);
+    // situations when integers out of bounds
+    strcpy(msg, "error, dead(-1, -2) != -1 over");
+    fail_unless(dead(-1, -2) == -1, msg);
+    strcpy(msg, "error, dead(MAX, MAX+1) != -1 over");
+    fail_unless(dead(Maxrow, Maxcol) == -1, msg);
 }
 END_TEST
 
-START_TEST(test_game_dead)
+START_TEST(test_game_chess_initchess)
 {
-    fail_unless(dead(1, 2) == 0, "error, dead(1, 2) != 0 over");
-    fail_unless(dead(1, 0) == 0, "error, dead(1, 0) != 0 over");
-    fail_unless(dead(0, 2) == 0, "error, dead(0, 2) != 0 over");
-    fail_unless(dead(0, 0) == 0, "error, dead(0, 0) != 0 over");
-    //如果add(1, 4) == 5的话，就成功，否则输出后面的字符串。
-    fail_unless(dead(-1, -2) == -1, "error, dead(-1, -2) != -1 over");
-    fail_unless(dead(MAX, MAX+1) == -1, "error, dead(MAX, MAX+1) != -1 over");
-     //turn the parameter to string
-    fail_unless(dead("ahha", "3") == -1, "error, alive(\"ahha\", \"3\") != -1 over");
-}
-END_TEST
-
-START_TEST(test_game){
-    int a[MAX][MAX], i=0, j=0;
-    fail_unless(initchess(a) == -1, "error, initchess(a) != -1 over");
-    fail_unless(chess(a) == -1, "error, chess(a) != -1 over");
-    for (i=0; i<MAX; i++){
-        for (j=0; j<MAX; j++){
-            a[i][j] = 0;
+    int i, j;
+    char msg[50] = {'\0'};
+    /*Tests for initchess(int** orgn) function & chess(int** ret) function*/
+    // situation when the pointer is NULL
+    int **board = NULL;
+    strcpy(msg, "error, initchess(board) != -1 over");
+    fail_unless(initchess(board) == -1, msg);
+    fail_unless(chess(board) == -1, msg);
+    // situation when the array elements haven't been initialized
+    board = (int **)malloc(Maxrow * sizeof(int *));
+    for (i = 0; i < Maxrow; i++)
+    {
+        board[i] = (int *)malloc(sizeof(int) * Maxcol);
+    }
+    fail_unless(initchess(board) == -1, msg);
+    fail_unless(chess(board) == -1, msg);
+    // situation when all the array elements are 0 (designed especially for function initchess(int** orgn))
+    for (i = 0; i < Maxrow; i++)
+    {
+        for (j = 0; j < Maxcol; j++)
+        {
+            board[i][j] = 0;
         }
     }
-    fail_unless(initchess(a) == 1, "error, initchess(a) != 1 over");
-    fail_unless(chess(a) == 0, "error, chess(a) != 0 over");
-    a[1][1] = 1;
-    fail_unless(initchess(a) == 0, "error, initchess(a) != 0 over");
-    fail_unless(chess(a) == 0, "error, chess(a) != 0 over");
+    strcpy(msg, "error, initchess(board) != 1 over");
+    fail_unless(initchess(board) == 1, msg);
+    strcpy(msg, "error, chess(board) != 0 over");
+    fail_unless(chess(board) == 0, msg);
+    //satisfactory situation
+    board[1][1] = 1;
+    strcpy(msg, "error, initchess(board) != 0 over");
+    fail_unless(initchess(board) == 0, msg);
+    strcpy(msg, "error, chess(board) != 0 over");
+    fail_unless(chess(board) == 0, msg);
 }
 END_TEST
 
-START_TEST(test_game_chess){
-    
-    
+START_TEST(test_file_load){
+    char filename[50], msg[50] = {'\0'};
+    // int i, j;
+    // int** board;
+    // board = (int **)malloc(Maxrow * sizeof(int *));
+    // for (i = 0; i < Maxrow; i++)
+    // {
+    //     board[i] = (int *)malloc(sizeof(int) * Maxcol);
+    //     for(j=0;j<Maxcol;j++){
+    //         board[i][j] = 0;
+    //     }
+    // }
+    // board[1][1] = 1;
+    // /*Tests for load(char filename[50]) function and save(char filename[50] function)*/
+    // //declared but not uninitialized char array
+    // strcpy(msg, "error, load(filename) != -1 over");
+    // fail_unless( load(filename) == -1, msg);
+    // strcpy(msg, "error, save(filename, board) != -1 over");
+    // fail_unless( save(filename, board) == -1, msg);
+    // //an initialized array with invalid filename
+    // strcpy(filename, "1.txt");
+    // strcpy(msg, "error, load(filename) != -1 over");
+    // fail_unless( load(filename) == 0, msg);
+    // strcpy(msg, "error, save(filename, board) != 0 over");
+    // fail_unless( save(filename, board) == -1, msg);
+    // //satisfactory situation
+    // strcpy(filename, "initstate.txt");
+    // strcpy(msg, "error, load(filename) != 0 over");
+    // fail_unless( load(filename) == 0, msg);
+    // strcpy(msg, "error, save(filename, board) != 0 over");
+    // fail_unless( save(filename, board) == 0, msg);
+    testsave(filename);
+    strcpy(msg, "error, testsave(filename) != 0 over");
+    fail_unless(testsave(filename) == 0, msg);
+
+
+   
 }
 END_TEST
-Suite *make_unit_suite(void)
+
+Suite *make_unit_suite1(void)
 {
-    Suite *s = suite_create("Game");          //创建一个名为bao1的 Suite
-    TCase *tc_bao = tcase_create("Core");   //创建一个名为bao2的a test  case（Tcase）
+    Suite *s1 = suite_create("Game");      //创建一个名为Game的 Suite
+    TCase *tc_bao1 = tcase_create("Core"); //创建一个名为Core的a test  case（Tcase）
 
-    suite_add_tcase(s, tc_bao);    //将a test  case添加到Tcase（bao1）中
-    tcase_add_test(tc_bao, test_game_alive);     //将a test  funtion （aaa） 添加到 a test  case（bao2）中
-    tcase_add_test(tc_bao, test_game_dead);
-    tcase_add_test(tc_bao, test_game);
+    suite_add_tcase(s1, tc_bao1);                   //将a test  case添加到Tcase（bao1）中
+    tcase_add_test(tc_bao1, test_game_alive_dead); //将a test  funtion （aaa） 添加到 a test  case（bao2）中
+    tcase_add_test(tc_bao1, test_game_chess_initchess);
 
-    return s;            //返回一个Suite的地址。
+    return s1; //返回一个Suite的地址。
+}
+
+Suite *make_unit_suite2(void)
+{
+    
+    Suite *s2 = suite_create("File");      //创建一个名为bao1的 Suite
+    TCase *tc_bao2 = tcase_create("fCore"); //创建一个名为bao2的a test  case（Tcase）
+
+    suite_add_tcase(s2, tc_bao2);                   //将a test  case添加到Tcase（bao1）中
+    tcase_add_test(tc_bao2, test_file_load); //将a test  funtion （aaa） 添加到 a test  case（bao2）中
+
+    return s2; //返回一个Suite的地址。
 }

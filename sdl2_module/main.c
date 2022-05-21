@@ -8,6 +8,7 @@
 int main(int argc, char *args[])
 {
     int count = 0;
+    bool ifSteps = true;
     char filename1[50] = "state.txt";
     if (argc == 2)
     {
@@ -25,7 +26,8 @@ int main(int argc, char *args[])
                 printf("Failed to initialize!\n");
                 return -1;
             }
-            eventLoop();
+            ifSteps = true;
+            eventLoop(ifSteps, count);
         }
     }
     if (argc == 1)
@@ -35,7 +37,8 @@ int main(int argc, char *args[])
             printf("Failed to initialize!\n");
             return -1;
         }
-        eventLoop();
+        ifSteps = false;
+        eventLoop(ifSteps, count);
     }
 
     save(filename1);

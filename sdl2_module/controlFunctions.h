@@ -12,7 +12,7 @@ int load(char filename[50]);
 //Save the result of the current game
 int save(char filename[50]);
 
-void eventLoop();
+void eventLoop(bool ifSteps, int steps);
 
 
 #endif

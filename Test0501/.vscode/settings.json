@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "check.h": "c",
+        "game.h": "c",
+        "dead.h": "c",
+        "gamefunctions.h": "c"
+    }
+}

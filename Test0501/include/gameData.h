@@ -1,25 +1,23 @@
 #ifndef _GAME_DATA_H
 #define _GAME_DATA_H
 #define FRAMERATE 2
-#define START_FILE_NAME "images/Game2.png"
-#define CLICK_FILE_NAME "images/Title.png"
-#define OVER_FILE_NAME "images/OVER.png"
-#define UP_FILE_NAME "images/up.png"
-#define DOWN_FILE_NAME "images/down.png"
-#define ITER_FILE_NAME "images/iter.png"
+#define START_FILE_NAME "Game2.png"
+#define CLICK_FILE_NAME "Title.png"
+#define OVER_FILE_NAME "OVER.png"
+
+#include <SDL2/SDL.h>
 
 
 
-int Maxrow, Maxcol;
-int** orgn;
-int** uorgn;
-int** ret;
+// extern int Maxrow, Maxcol;
+// int Mousex, Mousey;
+// extern int** orgn;
+// extern int** uorgn;
+// extern int** ret;
 
 enum GameState
 {
     START,
-    LASTB,
-    LASTA,
     MODE,
     FIRST,
     UFIRST,
@@ -47,6 +45,5 @@ SDL_Texture *gTexture = NULL;
 // Current displayed rectangle
 SDL_Rect fillRect;
 
-SDL_Point pos;
-SDL_Point pos1;
+
 #endif

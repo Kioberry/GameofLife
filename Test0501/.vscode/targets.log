@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.3
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
@@ -8,22 +6,16 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat May 21 16:16:50 2022
+# Make data base, printed on Sat May 21 21:20:27 2022
 
 # Variables
 
-# makefile (from 'makefile', line 17)
-OBJ = $(SRC:.c=.o)
 # environment
 GDK_BACKEND = x11
 # environment
 LC_ALL = C
 # environment
-NO_AT_BRIDGE = 1
-# environment
 GNOME_SHELL_SESSION_MODE = ubuntu
-# makefile (from 'makefile', line 7)
-SRC = main.c game.c
 # environment
 SSH_AGENT_LAUNCHER = gnome-keyring
 # environment
@@ -31,15 +23,13 @@ SNAP_INSTANCE_KEY =
 # environment
 GJS_DEBUG_OUTPUT = stderr
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-d7602463-32e9-4512-92b5-cdccb5c32a96.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-c7a67ab5-3b50-470d-acea-524cca8b7592.sock
 # environment
 LC_NAME = zh_CN.UTF-8
 # environment
 LC_NUMERIC = zh_CN.UTF-8
 # environment
 VSCODE_CWD = /home/xieberry
-# makefile (from 'makefile', line 13)
-LIBS = -lSDL2 -lSDL2_image
 # environment
 LC_ADDRESS = zh_CN.UTF-8
 # default
@@ -57,7 +47,7 @@ VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # default
 .VARIABLES := 
 # environment
-PWD = /home/xieberry/Projects/sdl2_demo
+PWD = /home/xieberry/Testproject/Test0501
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
@@ -81,7 +71,7 @@ XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.MIUMM1
 # makefile
 MAKEFLAGS = pqrR
 # makefile
-CURDIR := /home/xieberry/Projects/sdl2_demo
+CURDIR := /home/xieberry/Testproject/Test0501
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
@@ -142,6 +132,8 @@ SHELL = /bin/sh
 MAKECMDGOALS := all
 # environment
 XMODIFIERS = @im=ibus
+# makefile (from 'makefile', line 5)
+objects = game.o test_fun.o 
 # environment
 GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # environment
@@ -204,12 +196,10 @@ GNUMAKEFLAGS :=
 LOGNAME = xieberry
 # environment
 GIO_LAUNCHED_DESKTOP_FILE = /var/lib/snapd/desktop/applications/code_code.desktop
-# makefile (from 'makefile', line 5)
-EXE = $(EXE_DIR)/rendering
 # environment
 SNAP_ARCH = amd64
 # makefile
-.DEFAULT_GOAL := rendering
+.DEFAULT_GOAL := test
 # environment
 SYSTEMD_EXEC_PID = 1289
 # environment
@@ -231,19 +221,15 @@ MANAGERPID = 1104
 # environment
 LC_MEASUREMENT = zh_CN.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 6601
+GIO_LAUNCHED_DESKTOP_FILE_PID = 6058
 # environment
 _ = /snap/code/97/usr/share/code/code
 # environment
 LC_PAPER = zh_CN.UTF-8
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
-# makefile (from 'makefile', line 12)
-CFLAGS = -Wall -O
 # environment
 GDK_PIXBUF_MODULE_FILE = /home/xieberry/snap/code/common/.cache/gdk-pixbuf-loaders.cache
-# makefile (from 'makefile', line 4)
-EXE_DIR = .
 # environment
 JOURNAL_STREAM = 8:45602
 # environment
@@ -280,11 +266,8 @@ VSCODE_CLI = 1
 ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
 SNAP_COMMON = /var/snap/code/common
- 
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
-# makefile (from 'makefile', line 11)
-CC = gcc
 # environment
 SNAP_USER_DATA = /home/xieberry/snap/code/97
 # environment
@@ -295,8 +278,9 @@ GDMSESSION = ubuntu
 LC_IDENTIFICATION = zh_CN.UTF-8
 # environment
 SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
+ 
 # variable set hash-table stats:
-# Load=141/1024=14%, Rehash=0, Collisions=14/175=8%
+# Load=134/1024=13%, Rehash=0, Collisions=6/167=4%
 
 # Pattern-specific Variable Values
 
@@ -304,9 +288,12 @@ SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd
 
 # Directories
 
-# . (device 2051, inode 676730): 21 files, no impossibilities.
+# include (device 2051, inode 435059): No files, no impossibilities so far.
+# src (device 2051, inode 435055): 5 files, no impossibilities.
+# unit_test (device 2051, inode 435061): 3 files, no impossibilities so far.
+# . (device 2051, inode 435053): 13 files, no impossibilities.
 
-# 21 files, no impossibilities in 1 directories.
+# 21 files, no impossibilities in 4 directories.
 
 # Implicit Rules
 
@@ -314,44 +301,36 @@ SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd
 
 # Files
 
-.c.o:
+# Not a target:
+unit_test/test_fun.c:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-21 21:16:31.635491284
+#  File has been updated.
+#  Successfully updated.
+
+test_fun.o: unit_test/test_fun.c
 #  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'makefile', line 20):
-	$(CC) $(CFLAGS) -c -o $@ $< 
+#  Implicit/static pattern stem: 'test_fun'
+#  Last modified 2022-05-21 21:20:09.560776068
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'makefile', line 11):
+	gcc -c -I include $< -o $@
 
 # Not a target:
-gameData.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-gameFunctions.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+src/game.c:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-21 21:10:54.731401496
+#  File has been updated.
+#  Successfully updated.
 
 clean:
+#  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
-#  Modification time never checked.
+#  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'makefile', line 30):
-	rm -f $(OBJ) $(EXE)
-
-rendering: main.o game.o
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'makefile', line 25):
-	$(CC) $(OBJ) -o $(EXE) $(LIBS)
-
-# Not a target:
-game.c:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  recipe to execute (from 'makefile', line 15):
+	rm -f *.o test
 
 # Not a target:
 .DEFAULT:
@@ -359,56 +338,65 @@ game.c:
 #  Modification time never checked.
 #  File has not been updated.
 
-# Not a target:
-all:
+all: game.o test_fun.o
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
-#  File has not been updated.
+#  File has been updated.
+#  Successfully updated.
 
-# Not a target:
-main.c:
+test: test_main.c game.o test_fun.o
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-
-main.o: main.c controlFunctions.h
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-controlFunctions.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  recipe to execute (from 'makefile', line 7):
+	gcc -I include $^ -o $@ -lcheck -lsubunit -lm -lpthread -lSDL2 -lSDL2_image
 
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-14 18:13:34.909771115
+#  Last modified 2022-05-21 21:20:06.356806638
 #  File has been updated.
 #  Successfully updated.
 
-game.o: game.c gameData.h gameFunctions.h
+.PHONY: clean
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+game.o: src/game.c
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: 'game'
+#  Last modified 2022-05-21 21:20:09.432777285
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'makefile', line 11):
+	gcc -c -I include $< -o $@
+
+# Not a target:
+test_main.c:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
 # files hash-table stats:
-# Load=14/1024=1%, Rehash=0, Collisions=0/33=0%
+# Load=12/1024=1%, Rehash=0, Collisions=0/44=0%
 # VPATH Search Paths
 
-# No 'vpath' search paths.
+vpath %.h include
+vpath %.c src
+vpath %.c unit_test
+
+# 3 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 28 / storage = 249 B / avg = 8 B
-# current buf: size = 8162 B / used = 249 B / count = 28 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 32 / storage = 263 B / avg = 8 B
+# current buf: size = 8162 B / used = 263 B / count = 32 / avg = 8 B
 
-# strcache performance: lookups = 47 / hit rate = 40%
+# strcache performance: lookups = 65 / hit rate = 50%
 # hash-table stats:
-# Load=28/8192=0%, Rehash=0, Collisions=0/47=0%
-# Finished Make data base on Sat May 21 16:16:50 2022
+# Load=32/8192=0%, Rehash=0, Collisions=0/65=0%
+# Finished Make data base on Sat May 21 21:20:27 2022
 
  

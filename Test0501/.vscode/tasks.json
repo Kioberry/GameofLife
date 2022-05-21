@@ -1,0 +1,19 @@
+//tasks.json
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "gnss-sdr-lizw0.0.01",
+			"command": "gcc",
+			"args": [
+				"-g",
+				"main.cpp",
+				"-o",
+				"main"
+			]
+			//"group": "build"
+		}
+		
+	]
+}

@@ -8,10 +8,12 @@ int Adjacent(int neighbor, int row, int col, int **board);
 bool judgeNext(int** orgn, int** ret);
 //Display the initial state of the world
 int initchess();
-void MouseClick(int** uorgn, int Mousex, int Mousey);
+int whetherLast(SDL_Point pos, SDL_Rect rectup, SDL_Rect rectdown);
+void MouseClick(int** uorgn, SDL_Point pos);
 //Display the current state of the world
 int chess();
 int whetherClick();
-void draw();
+void loadIMG(SDL_Rect rect, const char* filename);
+void draw(bool ifSteps, int steps);
 
 #endif

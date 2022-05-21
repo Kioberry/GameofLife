@@ -1,0 +1,28 @@
+//launch.json
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "C/C++ Runner: Debug Session",
+        "type": "cppdbg",
+        "request": "launch",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}", // gdb程序的工作目录
+        "environment": [],
+        "program": "${workspaceFolder}/main",
+        "internalConsoleOptions": "openOnSessionStart",
+        "MIMode": "gdb",
+        "miDebuggerPath": "/usr/bin/gdb",
+        "externalConsole": false,
+        "setupCommands": [
+          {
+            "description": "Enable pretty-printing for gdb",
+            "text": "-enable-pretty-printing",
+            "ignoreFailures": true
+          }
+        ]
+      }
+    ]
+  }
+  

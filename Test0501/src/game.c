@@ -1,280 +1,242 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include "../include/alive.h"
-#include "../include/dead.h"
-#include "../include/utility.h"
+#include <SDL2/SDL.h>
+#include "../include/gameData.h"
+#include "../include/gameFunctions.h"
 
+int Maxrow = 6, Maxcol = 6;
+// int Mousex = 0, Mousey = 0;
+int **orgn = NULL;
+int **uorgn = NULL;
+int **ret = NULL;
 
-
-
-
-#define MAX 5 //每行格子數
-
-int count = 0, row, col, orgn[MAX][MAX], ret[MAX][MAX];
-int alive(int row, int col) {
-	if (row >= 0 && row < MAX && col >= 0 && col < MAX) {
+int alive(int row, int col)
+{
+	if (row >= 0 && row < Maxrow && col >= 0 && col < Maxcol)
+	{
+		fillRect.x = SCREEN_WIDTH / Maxcol * col;
+		fillRect.y = BUTTON_AREA + (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow * row;
+		fillRect.w = SCREEN_WIDTH / Maxcol;
+		fillRect.h = (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow;
+		// Rendering  to fill the rectangle
+		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
+		SDL_RenderFillRect(gRenderer, &fillRect);
 		return 0;
 	}
-	else {
-		printf("Invalid parameters of row and col.\n");
+	else
+	{
 		return -1;
 	}
 }
 
-int dead(int row, int col) {
-	if (row >= 0 && row < MAX && col >= 0 && col < MAX) {
+int dead(int row, int col)
+{
+	if (row >= 0 && row < Maxrow && col >= 0 && col < Maxcol)
+	{
+		fillRect.x = SCREEN_WIDTH / Maxcol * col;
+		fillRect.y = BUTTON_AREA + (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow * row;
+		fillRect.w = SCREEN_WIDTH / Maxcol;
+		fillRect.h = (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow;
+		// Rendering white to fill the rectangle
+		SDL_SetRenderDrawColor(gRenderer, 0xff, 0xff, 0xff, 0xff);
+		SDL_RenderFillRect(gRenderer, &fillRect);
 		return 0;
 	}
-	else {
-		printf("Invalid parameters of row and col.\n");
+	else
+	{
 		return -1;
 	}
 }
 
 /*Display the initial state of chessboard*/
-int initchess(int board[MAX][MAX]) {
-	int cont = 0;
-	for (row = 0; row != MAX; row++) {
-		for (col = 0; col != MAX; col++) {
-			if (board[row][col] != 1 && board[row][col] != 0){
+int initchess(int **orgn)
+{
+	int i, j, row, col, hor_y = 0, ver_x = 0;
+	int count = 0;
+	if (orgn == NULL)
+	{
+		printf("Sorry, the array pointer is NULL.\n");
+		return -1;
+	}
+	for (row = 0; row != Maxrow; row++)
+	{
+		for (col = 0; col != Maxcol; col++)
+		{
+			if (orgn[row][col] != 1 && orgn[row][col] != 0)
+			{
 				printf("The original-state array hasn't been initialized.\n");
 				return -1;
 			}
 		}
 	}
-	//printf("棋盤如下：\n");
-	for (row = 0; row != MAX; row++) {
-		for (col = 0; col != MAX; col++) {
-			//printf("%d ", board[row][col]);
-			if (board[row][col] == 1){
-				cont++;
+
+	for (i = 0; i < Maxrow; i++)
+	{
+		for (j = 0; j < Maxcol; j++)
+		{
+			if (orgn[i][j] == 0)
+			{
+				dead(i, j);
+			}
+			if (orgn[i][j] == 1)
+			{
+				count++;
+				alive(i, j);
 			}
 		}
-		//printf("\n");
 	}
-	if (cont == 0){
-		printf("Sorry that your last game has over because all cells have died.\n");
-		printf("We will restart the game for you.\n");
+	if (count == 0)
+	{
+		printf("All the cells have died in the last game, we will restart the game for you.\n");
 		return 1;
 	}
+	// draw the outline
+	// drawOutline(ver_x, hor_y);
 	return 0;
-
-	
 }
+
 /*Display the result state of chessboard every evolution*/
-int chess(int board[MAX][MAX]) {
-	for (row = 0; row != MAX; row++) {
-		for (col = 0; col != MAX; col++) {
-			if (board[row][col] != 1 && board[row][col] != 0){
-				printf("The result-state array hasn't been initialized.\n");
+int chess(int **ret)
+{
+	int i, j, row, col, hor_y = 0, ver_x = 0;
+	if (ret == NULL)
+	{
+		printf("Sorry, the array pointer is NULL.\n");
+		return -1;
+	}
+	for (row = 0; row != Maxrow; row++)
+	{
+		for (col = 0; col != Maxcol; col++)
+		{
+			if (ret[row][col] != 1 && ret[row][col] != 0)
+			{
+				printf("The original-state array hasn't been initialized.\n");
 				return -1;
 			}
 		}
 	}
-	//printf("棋盤如下：\n");
-	for (row = 0; row != MAX; row++) {
-		for (col = 0; col != MAX; col++) {
-			//printf("%d ", board[row][col]);
+
+	for (i = 0; i < Maxrow; i++)
+	{
+		for (j = 0; j < Maxcol; j++)
+		{
+			if (ret[i][j] == 0)
+			{
+				dead(i, j);
+			}
+			if (ret[i][j] == 1)
+			{
+				alive(i, j);
+			}
 		}
-		//printf("\n");
 	}
+
+	// drawOutline(ver_x, hor_y);
+
 	return 0;
 }
 
-int whetherChoose() {
-	int ch = 0;
-	int tryNum = 0;
-	char chosen = '\0';
-	char counts[20] = { '\0' };
+int load(char filename[50])
+{
+	FILE *fp = fopen(filename, "r");
+	int i, j, temp1, temp2;
 
-	printf("-----The Game of Life------\n");
-	while (tryNum <= 3) {
-		printf("Do you want to choose the number of iterations?(Y/N): ");
-		scanf("%c", &chosen);
-		while ((ch = getchar()) != '\n') {
-			;
-		}
-		chosen = toupper(chosen);
-		if (chosen == 'Y') {
-			printf("Please enter the number of steps: ");
-			for (;;) {
-				input_str(counts);
-				count = atoi(counts);
-				if (count <= 0) {
-					printf("Invalid input of steps, the number cannot be string or integer that is smaller than 1 ");
-				}
-				else {
-					printf("OK, the program will last %d iterations", count);
-					break;
-				}
-				memset(counts, 0, 20);
-			}
-			break;
-		}
-		if (chosen == 'N') {
-			printf("OK, the the program will keep evolving until it is terminate");
-			break;
-		}
-		else {
-			printf("Invalid choice, try again\n");
-		}
-		chosen = '\0';
-		tryNum++;
-	}
-	if (chosen == 'Y' || chosen == 'N') {
-		return 0;
-	}
-	else {
-		printf("Sorry that you have tried 3 times invalid input, back to the main screen");
+	if (fp == NULL)
+	{
+		printf("Sorry, the file doesn't exist.\n");
 		return -1;
 	}
+	else
+	{
+		if (fscanf(fp, "%d%d", &temp1, &temp2) == 2)
+		{
+			Maxrow = temp1;
+			Maxcol = temp2;
+			orgn = (int **)malloc(Maxrow * sizeof(int *));
+			uorgn = (int **)malloc(Maxrow * sizeof(int *));
+			ret = (int **)malloc(Maxrow * sizeof(int *));
+			for (i = 0; i < Maxrow; i++)
+			{
+				orgn[i] = (int *)malloc(sizeof(int) * Maxcol);
+				uorgn[i] = (int *)malloc(sizeof(int) * Maxcol);
+				ret[i] = (int *)malloc(sizeof(int) * Maxcol);
+				for (j = 0; j < Maxcol; j++)
+				{
+					orgn[i][j] = 0;
+					uorgn[i][j] = 0;
+					ret[i][j] = 0;
+				}
+			}
+		}
+		for (i = 0; i < Maxrow; i++)
+		{
+			for (j = 0; j < Maxcol; j++)
+			{
+				if (fscanf(fp, "%d  ", &temp1) == 1)
+				{
+					orgn[i][j] = temp1;
+				}
+			}
+		}
+	}
+	fclose(fp);
+	return 0;
 }
 
-void game() {
+int testsave(char filename[50])
+{
+	FILE *fp = NULL;
 	int i = 0;
-	int isFlag = 0;
-	/*if life is alive color is balck*/
-	//寫讀文件中數據
-	
-	
-	/*init the life array*/
-	for (row = 0; row < MAX; row++) {
-		for (col = 0; col < MAX; col++) {
-			orgn[row][col] = 0;
-			ret[row][col] = 0;
+	unsigned char ch = filename[i];
+	while (filename[i])
+	{
+		if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z'))
+		{
+			i++;
+			continue;
 		}
-	}
-	//load("state.txt");
-	orgn[0][1] = 1;
-	orgn[0][3] = 1;
-	orgn[1][2] = 1;
-	orgn[1][4] = 1;
-	orgn[2][1] = 1;
-	orgn[2][2] = 1;
-
-
-	initchess(orgn);
-	fflush(stdout);
-	sleep(2);//Linux下為sleep(2)小寫
-	system("cls");
-
-	//whetherChoose();
-	/*Start the game*/
-	for (i = 0; i < count; i++) {
-		int cells = 0; //本輪人口數
-		for (row = 0; row != MAX; row++) {
-			for (col = 0; col != MAX; col++)
+		else
+		{
+			if (ch >= '0' && ch <= '9')
 			{
-				/*if (ret[row][col] == 1) {
-					alive(row, col);
-				}
-				if (ret[row][col] == 0) {
-					dead(row, col);
-				}*/
-				cells += ret[row][col];
+				i++;
+				continue;
 			}
-		}	
-		/*Judge the next round of life*/
-		for (row = 0; row != MAX; row++) {
-			for (col = 0; col != MAX; col++) {
-				if (row == 0 && col == 0) {
-					switch (orgn[0][1] + orgn[1][1] + orgn[1][0]) 
-					{
-						case 3: 
-							ret[row][col] = 1; 
-							break;
-						case 2: 
-							ret[row][col] = orgn[row][col]; 
-							break;
-						default: 
-							ret[row][col] = 0;
-					}
-				} 
-				if (row == 0 && col == MAX-1) {
-					switch (orgn[0][MAX-2] + orgn[1][MAX-2] + orgn[1][MAX-1])
-					{
-					case 3:
-						ret[row][col] = 1;
-						break;
-					case 2:
-						ret[row][col] = orgn[row][col];
-						break;
-					default:
-						ret[row][col] = 0;
-					}
-				}
-				if (row == MAX-1 && col == 0) {
-					switch (orgn[MAX-2][0] + orgn[MAX-2][1] + orgn[MAX-1][1])
-					{
-					case 3:
-						ret[row][col] = 1;
-						break;
-					case 2:
-						ret[row][col] = orgn[row][col];
-						break;
-					default:
-						ret[row][col] = 0;
-					}
-				}
-				if (row == MAX-1 && col == MAX-1) {
-					switch (orgn[MAX-1][MAX-2] + orgn[MAX-2][MAX-1] + orgn[MAX-2][MAX-2])
-					{
-					case 3:
-						ret[row][col] = 1;
-						break;
-					case 2:
-						ret[row][col] = orgn[row][col];
-						break;
-					default:
-						ret[row][col] = 0;
-					}
-				}
-				else {
-					switch ((orgn[row - 1][col - 1] + orgn[row - 1][col] + orgn[row - 1][col + 1]
-						+ orgn[row][col - 1] + orgn[row][col + 1]
-						+ orgn[row + 1][col - 1] + orgn[row + 1][col] + orgn[row + 1][col + 1]))
-					{
-					case 3: 
-						ret[row][col] = 1; 
-						break;
-					case 2: 
-						ret[row][col] = orgn[row][col];
-						break;
-					default: 
-						ret[row][col] = 0;
-					}
-					/*end switch*/
-				}
+			else{
+				printf("Invalid input of file name.\n");
+				return -1;
 			}
 		}
-		chess(ret);
-		fflush(stdout);
-		sleep(2);//Linux下為sleep(2)小寫
-		system("cls");
-		/*judge whether the program will terminate*/
-		for (row = 0; row != MAX; row++) {
-			for (col = 0; col != MAX; col++) {
-				if (ret[row][col] == orgn[row][col]) {
-					isFlag = 1;
-				}
-			}
-		}
-		if (isFlag == 0) {
-			printf("The cellular state of the game will no longer change.");
-			fflush(stdout);
-			sleep(2);//Linux下為sleep(2)小寫
-			system("cls");
-			break;
-		}
-		/*update the array*/
-		for (row = 0; row != MAX; row++) {
-			for (col = 0; col != MAX; col++) {
-				orgn[row][col] = ret[row][col];
-			}		
-		}
-			
 	}
-	printf("Thank you for playing the game!Bye!");
+	//fp = fopen(filename, "w");
+	// if (fp == NULL)
+	// {
+	// 	printf("Sorry, the file doesn't exist.\n");
+	// 	return -1;
+	// }
+	fclose(fp);
+	return 0;
+}
+
+int save(char filename[50], int **board)
+{
+	char c = '\n';
+	FILE *fp = fopen(filename, "w");
+	if (fp == NULL)
+	{
+		printf("Sorry, the file doesn't exist.\n");
+		return -1;
+	}
+	int i, j;
+	fprintf(fp, "%d%c", Maxrow, c);
+	fprintf(fp, "%d%c", Maxcol, c);
+	for (i = 0; i < Maxrow; i++)
+	{
+		for (j = 0; j < Maxcol; j++)
+		{
+			fprintf(fp, "%d  ", board[i][j]);
+		}
+		fprintf(fp, "%c", c);
+	}
+	fclose(fp);
+	return 0;
 }

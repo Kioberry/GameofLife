@@ -60,9 +60,11 @@ void closeAll()
 	for (i = 0; i < Maxcol; i++)
 	{
 		free(orgn[i]);
+		free(uorgn[i]);
 		free(ret[i]);
 	}
 	free(orgn);
+	free(uorgn);
 	free(ret);
 
 	// Free loaded image
@@ -78,7 +80,8 @@ void closeAll()
 	atexit(SDL_Quit);
 }
 
-void drawOutline(int ver_x, int hor_y){
+void drawOutline(int ver_x, int hor_y)
+{
 	int i, j;
 	// draw the outline
 	for (i = 0; i <= Maxrow; i++)
@@ -202,7 +205,15 @@ int chess()
 	}
 
 	drawOutline(ver_x, hor_y);
-	
+	// if (gTexture != NULL)
+	// {
+	// 	SDL_DestroyTexture(gTexture);
+	// 	gTexture = NULL;
+	// }
+	// SDL_Rect destRect4 = {0, 0, SCREEN_WIDTH, BUTTON_AREA};
+	// SDL_RenderFillRect(gRenderer, &destRect4);
+	// gTexture = IMG_LoadTexture(gRenderer, ITER_FILE_NAME);
+	// SDL_RenderCopy(gRenderer, gTexture, NULL, &destRect4);
 	return 0;
 }
 
@@ -222,7 +233,7 @@ int Adjacent(int neighbor, int row, int col, int **board)
 	}
 }
 
-bool judgeNext(int** orgn, int** ret)
+bool judgeNext(int **orgn, int **ret)
 {
 	bool isFlag = false;
 	int row, col, i, j;
@@ -286,14 +297,17 @@ int load(char filename[50])
 			Maxrow = temp1;
 			Maxcol = temp2;
 			orgn = (int **)malloc(Maxrow * sizeof(int *));
+			uorgn = (int **)malloc(Maxrow * sizeof(int *));
 			ret = (int **)malloc(Maxrow * sizeof(int *));
 			for (i = 0; i < Maxrow; i++)
 			{
 				orgn[i] = (int *)malloc(sizeof(int) * Maxcol);
+				uorgn[i] = (int *)malloc(sizeof(int) * Maxcol);
 				ret[i] = (int *)malloc(sizeof(int) * Maxcol);
 				for (j = 0; j < Maxcol; j++)
 				{
 					orgn[i][j] = 0;
+					uorgn[i][j] = 0;
 					ret[i][j] = 0;
 				}
 			}
@@ -361,45 +375,105 @@ int whetherClick()
 	return 0;
 }
 
-void MouseClick(int** uorgn, int Mousex, int Mousey)
+void MouseClick(int **uorgn, SDL_Point pos)
 {
 	int row, col, ver_x = 0, hor_y = 0;
+	// Judge whether the cell has been clicked
 	for (row = 0; row < Maxrow; row++)
 	{
 		for (col = 0; col < Maxcol; col++)
 		{
-			if (Mousex >= SCREEN_WIDTH / Maxcol * col && Mousex < SCREEN_WIDTH / Maxcol * (col + 1))
+			dead(row, col);
+			if (SDL_PointInRect(&pos, &fillRect))
 			{
-				if (Mousey >= BUTTON_AREA + (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow * row && Mousey < BUTTON_AREA + (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow * (row + 1))
-				{
-					uorgn[row][col] = 1;
-					alive(row, col);
-				}
+				uorgn[row][col] = 1;
 			}
 		}
 	}
+	// Display all the cells after every click
+	for (row = 0; row < Maxrow; row++)
+	{
+		for (col = 0; col < Maxcol; col++)
+		{
+			if (uorgn[row][col] == 1)
+			{
+				alive(row, col);
+			}
+		}
+	}
+
+	if (gTexture != NULL)
+	{
+		SDL_DestroyTexture(gTexture);
+		gTexture = NULL;
+	}
+	SDL_Rect destRect3 = {0, 0, SCREEN_WIDTH, BUTTON_AREA};
+	SDL_RenderFillRect(gRenderer, &destRect3);
+	gTexture = IMG_LoadTexture(gRenderer, CLICK_FILE_NAME);
+	SDL_RenderCopy(gRenderer, gTexture, NULL, &destRect3);
+	// Draw the outline
 	drawOutline(ver_x, hor_y);
-	if (Mousey>=0 && Mousey<BUTTON_AREA){
+	if (pos.y > 0 && pos.y < BUTTON_AREA)
+	{
 		gameState = UPLAYING;
 		return;
 	}
 }
 
-void draw()
+int whetherLast(SDL_Point pos, SDL_Rect rectup, SDL_Rect rectdown)
+{
+	char filename1[50] = "initstate.txt";
+	char filename2[50] = "state.txt";
+	if (SDL_PointInRect(&pos, &rectup))
+	{
+		load(filename1);
+		gameState = FIRST;
+		return 1;
+	}
+	if (SDL_PointInRect(&pos, &rectdown))
+	{
+		load(filename2);
+		gameState = MODE;
+		return 2;
+	}
+	return 0;
+}
+
+void loadIMG(SDL_Rect rect, const char *filename)
+{
+	if (gTexture != NULL)
+	{
+		SDL_DestroyTexture(gTexture);
+		gTexture = NULL;
+	}
+	SDL_RenderFillRect(gRenderer, &rect);
+	gTexture = IMG_LoadTexture(gRenderer, filename);
+	SDL_RenderCopy(gRenderer, gTexture, NULL, &rect);
+}
+
+void draw(bool ifSteps, int steps)
 {
 	int chosen = 0;
-	int** uorgn = NULL;
 	// Initialize renderer color
 	SDL_SetRenderDrawColor(gRenderer, 0xff, 0xff, 0xff, 0xff);
 	SDL_RenderClear(gRenderer);
+	SDL_Rect destRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+	SDL_Rect destRect1 = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 2};
+	SDL_Rect destRect2 = {0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2};
 
 	switch (gameState)
 	{
 	case START:
-		SDL_Rect destRect1 = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-		SDL_RenderFillRect(gRenderer, &destRect1);
-		gTexture = IMG_LoadTexture(gRenderer, START_FILE_NAME);
-		SDL_RenderCopy(gRenderer, gTexture, NULL, &destRect1);
+		loadIMG(destRect, START_FILE_NAME);
+		break;
+	case LASTB:
+		loadIMG(destRect1, UP_FILE_NAME);
+		loadIMG(destRect2, DOWN_FILE_NAME);
+		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
+		SDL_RenderDrawLine(gRenderer, 0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2);
+		break;
+	case LASTA:
+		whetherLast(pos1, destRect1, destRect2);
 		break;
 	case MODE:
 		chosen = whetherClick();
@@ -410,61 +484,80 @@ void draw()
 		}
 		else
 		{
-			// switch (chosen)
-			// {
-			// case 1:
-			// 	gameState = FIRST;
-			// 	break;
-			// case 2:
-			// 	int i, j;
-			// 	gameState = UFIRST;
-			// 	// initialise the orginal array again
-			// 	uorgn = (int **)malloc(Maxrow * sizeof(int *));
-			// 	for (i = 0; i < Maxrow; i++)
-			// 	{
-			// 		uorgn[i] = (int *)malloc(sizeof(int) * Maxcol);
-			// 		for (j = 0; j < Maxcol; j++)
-			// 		{
-			// 			uorgn[i][j] = 0;
-			// 		}
-			// 	}
-			// 	break;
-			// }
+			switch (chosen)
+			{
+			case 1:
+				gameState = FIRST;
+				break;
+			case 2:
+				gameState = UFIRST;
+				break;
+			}
 		}
+		break;
 	case FIRST:
 		initchess();
 		gameState = PLAYING;
 		break;
 	case UFIRST:
-		MouseClick(uorgn,Mousex,Mousey);
+		MouseClick(uorgn, pos);
+		break;
 	case PLAYING:
-		if (!judgeNext(orgn, ret))
+		if (ifSteps == true)
 		{
-			printf("The state of the cells won't change anymore, the program will terminate.\n");
-			gameState = OVER;
-			return;
+			int n = 0;
+			while (n < steps)
+			{
+				if (!judgeNext(orgn, ret))
+				{
+					printf("The state of the cells won't change anymore, the program will terminate.\n");
+					gameState = OVER;
+					return;
+				}
+				chess();
+				n++;
+			}
 		}
-		chess();
+		if (ifSteps == false && steps == 0)
+		{
+			if (!judgeNext(orgn, ret))
+			{
+				printf("The state of the cells won't change anymore, the program will terminate.\n");
+				gameState = OVER;
+				return;
+			}
+			chess();
+		}
 		break;
 	case UPLAYING:
-		if (!judgeNext(uorgn, ret))
+		if (ifSteps == true)
 		{
-			printf("The state of the cells won't change anymore, the program will terminate.\n");
-			gameState = OVER;
-			return;
+			int n = 0;
+			while (n < steps)
+			{
+				if (!judgeNext(uorgn, ret))
+				{
+					printf("The state of the cells won't change anymore, the program will terminate.\n");
+					gameState = OVER;
+					return;
+				}
+				chess();
+				n++;
+			}
 		}
-		chess();
-		break;	
+		if (ifSteps == false && steps == 0)
+		{
+			if (!judgeNext(uorgn, ret))
+			{
+				printf("The state of the cells won't change anymore, the program will terminate.\n");
+				gameState = OVER;
+				return;
+			}
+			chess();
+		}
+		break;
 	case OVER:
-		if (gTexture != NULL)
-		{
-			SDL_DestroyTexture(gTexture);
-			gTexture = NULL;
-		}
-		SDL_Rect destRect2 = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-		SDL_RenderFillRect(gRenderer, &destRect2);
-		gTexture = IMG_LoadTexture(gRenderer, OVER_FILE_NAME);
-		SDL_RenderCopy(gRenderer, gTexture, NULL, &destRect2);
+		loadIMG(destRect, OVER_FILE_NAME);
 		break;
 	}
 
@@ -472,7 +565,7 @@ void draw()
 	SDL_RenderPresent(gRenderer);
 }
 
-void eventLoop()
+void eventLoop(bool ifSteps, int steps)
 {
 	while (true)
 	{
@@ -485,20 +578,27 @@ void eventLoop()
 			switch (event.type)
 			{
 			case SDL_QUIT:
-				// destroy all
 				return;
 
 			case SDL_MOUSEBUTTONDOWN:
 				if (gameState == START)
 				{
-					char filename[50] = "initstate.txt";
-					load(filename);
-					gameState = MODE;
+					gameState = LASTB;
+					break;
+				}
+				if (gameState == LASTB)
+				{
+					gameState = LASTA;
 				}
 				if (gameState == UFIRST)
 				{
-					Mousex = event.button.x;
-					Mousey = event.button.y;
+					pos.x = event.button.x;
+					pos.y = event.button.y;
+				}
+				if (gameState == LASTA)
+				{
+					pos1.x = event.button.x;
+					pos1.y = event.button.y;
 				}
 				break;
 
@@ -506,12 +606,14 @@ void eventLoop()
 				switch (event.key.keysym.sym)
 				{
 				case SDLK_ESCAPE:
-					// destroy all
 					return;
+				case SDLK_RETURN:
+					gameState = LASTB;
+					break;
 				}
 			}
 		}
-		draw();
+		draw(ifSteps, steps);
 
 		int end = SDL_GetTicks();
 		int time_ = end - begin;
