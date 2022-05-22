@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat May 21 21:20:27 2022
+# Make data base, printed on Sun May 22 13:42:23 2022
 
 # Variables
 
@@ -14,6 +14,8 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 GDK_BACKEND = x11
 # environment
 LC_ALL = C
+# environment
+NO_AT_BRIDGE = 1
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
@@ -23,7 +25,7 @@ SNAP_INSTANCE_KEY =
 # environment
 GJS_DEBUG_OUTPUT = stderr
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-c7a67ab5-3b50-470d-acea-524cca8b7592.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-bc13b805-5e86-432e-bdb0-8ae173724608.sock
 # environment
 LC_NAME = zh_CN.UTF-8
 # environment
@@ -51,7 +53,7 @@ PWD = /home/xieberry/Testproject/Test0501
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
-XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop:/opt/apps/com.qq.im.deepin/entries:/opt/apps/com.qq.weixin.deepin/entries
+XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
@@ -63,7 +65,7 @@ VSCODE_CODE_CACHE_PATH = /home/xieberry/.config/Code/CachedData/c3511e6c69bb3901
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.MIUMM1
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.P4YRM1
 # default
 .LOADED := 
 # default
@@ -103,7 +105,7 @@ SNAP_REEXEC =
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 6097
+VSCODE_PID = 4134
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
@@ -111,7 +113,7 @@ XDG_SESSION_TYPE = wayland
 # environment
 BAMF_DESKTOP_FILE_HINT = /var/lib/snapd/desktop/applications/code_code.desktop
 # environment
-SESSION_MANAGER = local/xieberry-virtual-machine:@/tmp/.ICE-unix/1250,unix/xieberry-virtual-machine:/tmp/.ICE-unix/1250
+SESSION_MANAGER = local/xieberry-virtual-machine:@/tmp/.ICE-unix/1228,unix/xieberry-virtual-machine:/tmp/.ICE-unix/1228
 # automatic
 *F = $(notdir $*)
 # environment
@@ -163,7 +165,7 @@ LC_TIME = zh_CN.UTF-8
 # environment
 SNAP = /snap/code/97
 # environment
-INVOCATION_ID = 6c5c9c9be4094943a29579fdc00c660f
+INVOCATION_ID = 1c6d6992f4734352864e5ba2e10ec213
 # environment
 SNAP_REVISION = 97
 # environment
@@ -201,7 +203,7 @@ SNAP_ARCH = amd64
 # makefile
 .DEFAULT_GOAL := test
 # environment
-SYSTEMD_EXEC_PID = 1289
+SYSTEMD_EXEC_PID = 1257
 # environment
 DISPLAY = :0
 # environment
@@ -217,11 +219,11 @@ SNAP_DATA = /var/snap/code/97
 # environment
 SNAP_CONTEXT = QcfP1MfkKtqMqyWyWwhJfKA9unAgtRH9k_lAed3yQ76WOqVpDGHW
 # environment
-MANAGERPID = 1104
+MANAGERPID = 1100
 # environment
 LC_MEASUREMENT = zh_CN.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 6058
+GIO_LAUNCHED_DESKTOP_FILE_PID = 4666
 # environment
 _ = /snap/code/97/usr/share/code/code
 # environment
@@ -231,7 +233,7 @@ XDG_RUNTIME_DIR = /run/user/1000
 # environment
 GDK_PIXBUF_MODULE_FILE = /home/xieberry/snap/code/common/.cache/gdk-pixbuf-loaders.cache
 # environment
-JOURNAL_STREAM = 8:45602
+JOURNAL_STREAM = 8:45908
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -276,11 +278,11 @@ XDG_MENU_PREFIX = gnome-
 GDMSESSION = ubuntu
 # environment
 LC_IDENTIFICATION = zh_CN.UTF-8
+ 
 # environment
 SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
- 
 # variable set hash-table stats:
-# Load=134/1024=13%, Rehash=0, Collisions=6/167=4%
+# Load=135/1024=13%, Rehash=0, Collisions=6/171=4%
 
 # Pattern-specific Variable Values
 
@@ -289,9 +291,9 @@ SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd
 # Directories
 
 # include (device 2051, inode 435059): No files, no impossibilities so far.
-# src (device 2051, inode 435055): 5 files, no impossibilities.
+# src (device 2051, inode 435055): 6 files, no impossibilities.
 # unit_test (device 2051, inode 435061): 3 files, no impossibilities so far.
-# . (device 2051, inode 435053): 13 files, no impossibilities.
+# . (device 2051, inode 435053): 12 files, no impossibilities.
 
 # 21 files, no impossibilities in 4 directories.
 
@@ -304,23 +306,41 @@ SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd
 # Not a target:
 unit_test/test_fun.c:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-21 21:16:31.635491284
+#  Last modified 2022-05-22 13:30:55.950750597
 #  File has been updated.
 #  Successfully updated.
 
 test_fun.o: unit_test/test_fun.c
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: 'test_fun'
-#  Last modified 2022-05-21 21:20:09.560776068
+#  Last modified 2022-05-22 13:30:47.014786761
 #  File has been updated.
-#  Successfully updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := test_fun.o
+# automatic
+# * := test_fun
+# automatic
+# < := unit_test/test_fun.c
+# automatic
+# + := unit_test/test_fun.c
+# automatic
+# % := 
+# automatic
+# ^ := unit_test/test_fun.c
+# automatic
+# ? := unit_test/test_fun.c
+# automatic
+# | := 
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/13=8%
 #  recipe to execute (from 'makefile', line 11):
 	gcc -c -I include $< -o $@
 
 # Not a target:
 src/game.c:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-21 21:10:54.731401496
+#  Last modified 2022-05-22 11:36:01.740724002
 #  File has been updated.
 #  Successfully updated.
 
@@ -330,7 +350,7 @@ clean:
 #  File does not exist.
 #  File has not been updated.
 #  recipe to execute (from 'makefile', line 15):
-	rm -f *.o test
+	rm -f *.o *.txt test
 
 # Not a target:
 .DEFAULT:
@@ -343,7 +363,9 @@ all: game.o test_fun.o
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
-#  Successfully updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/3=0%
 
 test: test_main.c game.o test_fun.o
 #  Implicit rule search has not been done.
@@ -355,7 +377,7 @@ test: test_main.c game.o test_fun.o
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-21 21:20:06.356806638
+#  Last modified 2022-05-22 10:00:29.541425475
 #  File has been updated.
 #  Successfully updated.
 
@@ -367,7 +389,7 @@ makefile:
 game.o: src/game.c
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: 'game'
-#  Last modified 2022-05-21 21:20:09.432777285
+#  Last modified 2022-05-22 13:30:46.91878715
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'makefile', line 11):
@@ -391,12 +413,12 @@ vpath %.c unit_test
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 32 / storage = 263 B / avg = 8 B
-# current buf: size = 8162 B / used = 263 B / count = 32 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 32 / storage = 265 B / avg = 8 B
+# current buf: size = 8162 B / used = 265 B / count = 32 / avg = 8 B
 
 # strcache performance: lookups = 65 / hit rate = 50%
 # hash-table stats:
 # Load=32/8192=0%, Rehash=0, Collisions=0/65=0%
-# Finished Make data base on Sat May 21 21:20:27 2022
+# Finished Make data base on Sun May 22 13:42:23 2022
 
  

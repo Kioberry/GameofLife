@@ -1,7 +1,5 @@
-make --dry-run --always-make --keep-going --print-directory
+make --dry-run --keep-going --print-directory
 make: Entering directory '/home/xieberry/Projects/sdl2_demo'
-gcc -Wall -O -c -o main.o main.c 
-gcc -Wall -O -c -o game.o game.c 
-gcc main.o game.o -o ./rendering -lSDL2 -lSDL2_image
+make: 'rendering' is up to date.
 make: Leaving directory '/home/xieberry/Projects/sdl2_demo'
  

@@ -3,6 +3,7 @@
         "check.h": "c",
         "game.h": "c",
         "dead.h": "c",
-        "gamefunctions.h": "c"
+        "gamefunctions.h": "c",
+        "gamedata.h": "c"
     }
 }

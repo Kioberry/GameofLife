@@ -1,10 +1,17 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <stdbool.h>
 #include "../include/gameData.h"
 #include "../include/gameFunctions.h"
 
 int Maxrow = 6, Maxcol = 6;
-// int Mousex = 0, Mousey = 0;
+
+// Screen dimension constants
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
+const int BUTTON_AREA = 80;
+
 int **orgn = NULL;
 int **uorgn = NULL;
 int **ret = NULL;
@@ -24,6 +31,7 @@ int alive(int row, int col)
 	}
 	else
 	{
+		printf("Invalid input of row or col.\n");
 		return -1;
 	}
 }
@@ -43,6 +51,7 @@ int dead(int row, int col)
 	}
 	else
 	{
+		printf("Invalid input of row or col.\n");
 		return -1;
 	}
 }
@@ -143,6 +152,17 @@ int load(char filename[50])
 	if (fp == NULL)
 	{
 		printf("Sorry, the file doesn't exist.\n");
+		orgn = NULL;
+		uorgn = NULL;
+		ret = NULL;
+		return -1;
+	}
+
+	fseek(fp, 0, SEEK_END);
+	int flen = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+	if (flen == 0){
+		printf("An empty file with no data.\n");
 		return -1;
 	}
 	else
@@ -182,48 +202,17 @@ int load(char filename[50])
 	return 0;
 }
 
-int testsave(char filename[50])
-{
-	FILE *fp = NULL;
-	int i = 0;
-	unsigned char ch = filename[i];
-	while (filename[i])
-	{
-		if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z'))
-		{
-			i++;
-			continue;
-		}
-		else
-		{
-			if (ch >= '0' && ch <= '9')
-			{
-				i++;
-				continue;
-			}
-			else{
-				printf("Invalid input of file name.\n");
-				return -1;
-			}
-		}
-	}
-	//fp = fopen(filename, "w");
-	// if (fp == NULL)
-	// {
-	// 	printf("Sorry, the file doesn't exist.\n");
-	// 	return -1;
-	// }
-	fclose(fp);
-	return 0;
-}
-
-int save(char filename[50], int **board)
+int save(char filename[50])
 {
 	char c = '\n';
 	FILE *fp = fopen(filename, "w");
 	if (fp == NULL)
 	{
 		printf("Sorry, the file doesn't exist.\n");
+		return -1;
+	}
+	if (ret == NULL){
+		printf("The previous file loading is unsuccessfull, unable to store date to the file.\n");
 		return -1;
 	}
 	int i, j;
@@ -233,10 +222,162 @@ int save(char filename[50], int **board)
 	{
 		for (j = 0; j < Maxcol; j++)
 		{
-			fprintf(fp, "%d  ", board[i][j]);
+			fprintf(fp, "%d  ", ret[i][j]);
 		}
 		fprintf(fp, "%c", c);
 	}
 	fclose(fp);
+	return 0;
+}
+
+int Adjacent(int neighbor, int row, int col, int **board)
+{
+	if (neighbor < 0 || neighbor > 8 || row < 0 || row >= Maxrow\
+	|| col < 0 || col >= Maxcol || board == NULL)
+	{
+		printf("There exists invalid formal parameters, unable to continue.\n");
+		return -1;
+	}
+	if (neighbor == 2)
+	{
+		return board[row][col];
+	}
+	else if (neighbor == 3)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+bool judgeNext(int **orgn, int **ret)
+{
+	bool isFlag = false;
+	int row, col, i, j;
+	int neighbor = 0, c, r;
+	for (row = 0; row < Maxrow; row++)
+	{
+		for (col = 0; col < Maxcol; col++)
+		{
+			for (r = row - 1; r <= row + 1; r++)
+				for (c = col - 1; c <= col + 1; c++)
+				{
+					if (r < 0 || r >= Maxrow)
+						continue;
+					if (c < 0 || c >= Maxcol)
+						continue;
+					if (orgn[r][c] == 1)
+						neighbor++;
+				}
+			if (orgn[row][col] == 1)
+				neighbor--;
+			ret[row][col] = Adjacent(neighbor, row, col, orgn);
+			neighbor = 0;
+		}
+	}
+	/*judge whether the program will terminate*/
+	for (row = 0; row != Maxrow; row++)
+	{
+		for (col = 0; col != Maxrow; col++)
+		{
+			if (ret[row][col] != orgn[row][col])
+			{
+				isFlag = true;
+			}
+		}
+	}
+	/*update the array*/
+	for (i = 0; i != Maxrow; i++)
+	{
+		for (j = 0; j != Maxcol; j++)
+		{
+			orgn[i][j] = ret[i][j];
+		}
+	}
+	if (isFlag == false){
+		printf("The state of the cells won't change anymore, the program will terminate.\n");
+	}
+	return isFlag;
+}
+
+void drawOutline(int ver_x, int hor_y)
+{
+	int i, j;
+	// draw the outline
+	for (i = 0; i <= Maxrow; i++)
+	{
+		hor_y = BUTTON_AREA + (SCREEN_HEIGHT - BUTTON_AREA) / Maxrow * i;
+		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
+		SDL_RenderDrawLine(gRenderer, 0, hor_y, SCREEN_WIDTH, hor_y);
+	}
+	for (j = 0; j <= Maxcol; j++)
+	{
+		ver_x = SCREEN_WIDTH / Maxcol * j;
+		SDL_SetRenderDrawColor(gRenderer, 209, 206, 220, 0);
+		SDL_RenderDrawLine(gRenderer, ver_x, BUTTON_AREA, ver_x, SCREEN_HEIGHT);
+	}
+}
+
+void loadIMG(SDL_Rect rect, const char *filename)
+{
+	if (gTexture != NULL)
+	{
+		SDL_DestroyTexture(gTexture);
+		gTexture = NULL;
+	}
+	SDL_RenderFillRect(gRenderer, &rect);
+	gTexture = IMG_LoadTexture(gRenderer, filename);
+	SDL_RenderCopy(gRenderer, gTexture, NULL, &rect);
+}
+
+int MouseClick(int **uorgn, SDL_Point pos)
+{
+	if (uorgn == NULL || pos.x<0 || pos.x>SCREEN_WIDTH ||pos.y<0 || pos.y>SCREEN_HEIGHT){
+		printf("Invalid int array or SDL_Point.\n");
+		return -1;
+	}
+	int row, col, ver_x = 0, hor_y = 0;
+	// Judge whether the cell has been clicked
+	for (row = 0; row < Maxrow; row++)
+	{
+		for (col = 0; col < Maxcol; col++)
+		{
+			dead(row, col);
+			if (SDL_PointInRect(&pos, &fillRect))
+			{
+				uorgn[row][col] = 1;
+			}
+		}
+	}
+	// Display all the cells after every click
+	for (row = 0; row < Maxrow; row++)
+	{
+		for (col = 0; col < Maxcol; col++)
+		{
+			if (uorgn[row][col] == 1)
+			{
+				alive(row, col);
+			}
+		}
+	}
+
+	if (gTexture != NULL)
+	{
+		SDL_DestroyTexture(gTexture);
+		gTexture = NULL;
+	}
+	SDL_Rect destRect3 = {0, 0, SCREEN_WIDTH, BUTTON_AREA};
+	SDL_RenderFillRect(gRenderer, &destRect3);
+	gTexture = IMG_LoadTexture(gRenderer, CLICK_FILE_NAME);
+	SDL_RenderCopy(gRenderer, gTexture, NULL, &destRect3);
+	// Draw the outline
+	drawOutline(ver_x, hor_y);
+	if (pos.y > 0 && pos.y < BUTTON_AREA)
+	{
+		gameState = UPLAYING;
+		return 0;
+	}
 	return 0;
 }

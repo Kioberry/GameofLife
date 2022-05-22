@@ -8,22 +8,20 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat May 21 16:16:50 2022
+# Make data base, printed on Sun May 22 15:34:36 2022
 
 # Variables
 
-# makefile (from 'makefile', line 17)
+# makefile (from 'makefile', line 18)
 OBJ = $(SRC:.c=.o)
 # environment
 GDK_BACKEND = x11
 # environment
 LC_ALL = C
-# environment
-NO_AT_BRIDGE = 1
+# makefile (from 'makefile', line 8)
+SRC = main.c game.c
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
-# makefile (from 'makefile', line 7)
-SRC = main.c game.c
 # environment
 SSH_AGENT_LAUNCHER = gnome-keyring
 # environment
@@ -31,14 +29,14 @@ SNAP_INSTANCE_KEY =
 # environment
 GJS_DEBUG_OUTPUT = stderr
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-d7602463-32e9-4512-92b5-cdccb5c32a96.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-7fa63c02-c28e-4dc6-9ab9-cd6bf5f9889f.sock
 # environment
 LC_NAME = zh_CN.UTF-8
 # environment
 LC_NUMERIC = zh_CN.UTF-8
 # environment
 VSCODE_CWD = /home/xieberry
-# makefile (from 'makefile', line 13)
+# makefile (from 'makefile', line 14)
 LIBS = -lSDL2 -lSDL2_image
 # environment
 LC_ADDRESS = zh_CN.UTF-8
@@ -61,7 +59,7 @@ PWD = /home/xieberry/Projects/sdl2_demo
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
-XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop:/opt/apps/com.qq.im.deepin/entries:/opt/apps/com.qq.weixin.deepin/entries
+XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
@@ -73,7 +71,7 @@ VSCODE_CODE_CACHE_PATH = /home/xieberry/.config/Code/CachedData/c3511e6c69bb3901
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.MIUMM1
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.P4YRM1
 # default
 .LOADED := 
 # default
@@ -113,7 +111,7 @@ SNAP_REEXEC =
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 6097
+VSCODE_PID = 4134
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
@@ -121,7 +119,7 @@ XDG_SESSION_TYPE = wayland
 # environment
 BAMF_DESKTOP_FILE_HINT = /var/lib/snapd/desktop/applications/code_code.desktop
 # environment
-SESSION_MANAGER = local/xieberry-virtual-machine:@/tmp/.ICE-unix/1250,unix/xieberry-virtual-machine:/tmp/.ICE-unix/1250
+SESSION_MANAGER = local/xieberry-virtual-machine:@/tmp/.ICE-unix/1228,unix/xieberry-virtual-machine:/tmp/.ICE-unix/1228
 # automatic
 *F = $(notdir $*)
 # environment
@@ -171,7 +169,7 @@ LC_TIME = zh_CN.UTF-8
 # environment
 SNAP = /snap/code/97
 # environment
-INVOCATION_ID = 6c5c9c9be4094943a29579fdc00c660f
+INVOCATION_ID = 1c6d6992f4734352864e5ba2e10ec213
 # environment
 SNAP_REVISION = 97
 # environment
@@ -204,14 +202,14 @@ GNUMAKEFLAGS :=
 LOGNAME = xieberry
 # environment
 GIO_LAUNCHED_DESKTOP_FILE = /var/lib/snapd/desktop/applications/code_code.desktop
-# makefile (from 'makefile', line 5)
+# makefile (from 'makefile', line 6)
 EXE = $(EXE_DIR)/rendering
 # environment
 SNAP_ARCH = amd64
 # makefile
 .DEFAULT_GOAL := rendering
 # environment
-SYSTEMD_EXEC_PID = 1289
+SYSTEMD_EXEC_PID = 1257
 # environment
 DISPLAY = :0
 # environment
@@ -227,25 +225,25 @@ SNAP_DATA = /var/snap/code/97
 # environment
 SNAP_CONTEXT = QcfP1MfkKtqMqyWyWwhJfKA9unAgtRH9k_lAed3yQ76WOqVpDGHW
 # environment
-MANAGERPID = 1104
+MANAGERPID = 1100
 # environment
 LC_MEASUREMENT = zh_CN.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 6601
+GIO_LAUNCHED_DESKTOP_FILE_PID = 3876
 # environment
 _ = /snap/code/97/usr/share/code/code
 # environment
 LC_PAPER = zh_CN.UTF-8
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
-# makefile (from 'makefile', line 12)
+# makefile (from 'makefile', line 13)
 CFLAGS = -Wall -O
 # environment
 GDK_PIXBUF_MODULE_FILE = /home/xieberry/snap/code/common/.cache/gdk-pixbuf-loaders.cache
-# makefile (from 'makefile', line 4)
+# makefile (from 'makefile', line 5)
 EXE_DIR = .
 # environment
-JOURNAL_STREAM = 8:45602
+JOURNAL_STREAM = 8:45908
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -280,10 +278,10 @@ VSCODE_CLI = 1
 ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
 SNAP_COMMON = /var/snap/code/common
- 
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
-# makefile (from 'makefile', line 11)
+ 
+# makefile (from 'makefile', line 12)
 CC = gcc
 # environment
 SNAP_USER_DATA = /home/xieberry/snap/code/97
@@ -296,7 +294,7 @@ LC_IDENTIFICATION = zh_CN.UTF-8
 # environment
 SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
 # variable set hash-table stats:
-# Load=141/1024=14%, Rehash=0, Collisions=14/175=8%
+# Load=140/1024=14%, Rehash=0, Collisions=10/174=6%
 
 # Pattern-specific Variable Values
 
@@ -304,9 +302,11 @@ SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd
 
 # Directories
 
-# . (device 2051, inode 676730): 21 files, no impossibilities.
+# include (device 2051, inode 680043): No files, no impossibilities so far.
+# src (device 2051, inode 676837): No files, no impossibilities so far.
+# . (device 2051, inode 676730): 11 files, no impossibilities.
 
-# 21 files, no impossibilities in 1 directories.
+# 11 files, no impossibilities in 3 directories.
 
 # Implicit Rules
 
@@ -318,7 +318,7 @@ SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'makefile', line 20):
+#  recipe to execute (from 'makefile', line 21):
 	$(CC) $(CFLAGS) -c -o $@ $< 
 
 # Not a target:
@@ -337,14 +337,14 @@ clean:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'makefile', line 30):
-	rm -f $(OBJ) $(EXE)
+#  recipe to execute (from 'makefile', line 31):
+	rm -f *.txt $(OBJ) $(EXE)
 
 rendering: main.o game.o
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'makefile', line 25):
+#  recipe to execute (from 'makefile', line 26):
 	$(CC) $(OBJ) -o $(EXE) $(LIBS)
 
 # Not a target:
@@ -384,9 +384,10 @@ controlFunctions.h:
 #  File has not been updated.
 
 # Not a target:
+ 
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-14 18:13:34.909771115
+#  Last modified 2022-05-22 15:32:13.353582408
 #  File has been updated.
 #  Successfully updated.
 
@@ -399,16 +400,19 @@ game.o: game.c gameData.h gameFunctions.h
 # Load=14/1024=1%, Rehash=0, Collisions=0/33=0%
 # VPATH Search Paths
 
-# No 'vpath' search paths.
+vpath %.h include
+vpath %.c src
+
+# 2 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 28 / storage = 249 B / avg = 8 B
-# current buf: size = 8162 B / used = 249 B / count = 28 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 25 / storage = 209 B / avg = 8 B
+# current buf: size = 8162 B / used = 209 B / count = 25 / avg = 8 B
 
-# strcache performance: lookups = 47 / hit rate = 40%
+# strcache performance: lookups = 43 / hit rate = 41%
 # hash-table stats:
-# Load=28/8192=0%, Rehash=0, Collisions=0/47=0%
-# Finished Make data base on Sat May 21 16:16:50 2022
+# Load=25/8192=0%, Rehash=0, Collisions=0/43=0%
+# Finished Make data base on Sun May 22 15:34:36 2022
 
  

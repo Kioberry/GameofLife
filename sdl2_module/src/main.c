@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 #include <malloc.h>
-#include "controlFunctions.h"
+#include "../include/controlFunctions.h"
 
 /*problem: have to add a white image to be the background to prevent random error.*/
 int main(int argc, char *args[])

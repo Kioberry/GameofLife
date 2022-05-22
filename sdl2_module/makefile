@@ -1,6 +1,7 @@
 
 # code details
-
+vpath %.h include
+vpath %.c src
 EXE_DIR = .
 EXE = $(EXE_DIR)/rendering
 
@@ -27,7 +28,7 @@ $(EXE): $(OBJ)
 # clean up compilation
 
 clean:
-	rm -f $(OBJ) $(EXE)
+	rm -f *.txt $(OBJ) $(EXE)
 
 # dependencies
 

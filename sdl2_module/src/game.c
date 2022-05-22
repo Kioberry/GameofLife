@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <malloc.h>
 #include "stdbool.h"
-#include "gameData.h"
-#include "gameFunctions.h"
-#include "controlFunctions.h"
+#include "../include/gameData.h"
+#include "../include/gameFunctions.h"
+#include "../include/controlFunctions.h"
 
 bool init()
 {
@@ -113,6 +113,7 @@ int dead(int row, int col)
 	}
 	else
 	{
+		printf("Invalid input of row or col.\n");
 		return -1;
 	}
 }
@@ -133,6 +134,7 @@ int alive(int row, int col)
 	}
 	else
 	{
+		printf("Invalid input of row or col.\n");
 		return -1;
 	}
 }
@@ -219,6 +221,13 @@ int chess()
 
 int Adjacent(int neighbor, int row, int col, int **board)
 {
+	//Ensure that the formal parameters are valid
+	if (neighbor < 0 || neighbor > 8 || row < 0 || row >= Maxrow\
+	|| col < 0 || col >= Maxcol || board == NULL)
+	{
+		printf("There exists invalid formal parameters, unable to continue.\n");
+		return -1;
+	}
 	if (neighbor == 2)
 	{
 		return board[row][col];
@@ -277,6 +286,9 @@ bool judgeNext(int **orgn, int **ret)
 			orgn[i][j] = ret[i][j];
 		}
 	}
+	if (isFlag == false){
+		printf("The state of the cells won't change anymore, the program will terminate.\n");
+	}
 	return isFlag;
 }
 
@@ -288,6 +300,16 @@ int load(char filename[50])
 	if (fp == NULL)
 	{
 		printf("Sorry, the file doesn't exist.");
+		orgn = NULL;
+		uorgn = NULL;
+		ret = NULL;
+		return -1;
+	}
+	fseek(fp, 0, SEEK_END);
+	int flen = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+	if (flen == 0){
+		printf("An empty file with no data.\n");
 		return -1;
 	}
 	else
@@ -336,6 +358,10 @@ int save(char filename[50])
 		printf("Sorry, the file doesn't exist.");
 		return -1;
 	}
+	if (ret == NULL){
+		printf("The previous file loading is unsuccessfull, unable to store date to the file.\n");
+		return -1;
+	}
 	int i, j;
 	fprintf(fp, "%d%c", Maxrow, c);
 	fprintf(fp, "%d%c", Maxcol, c);
@@ -375,9 +401,13 @@ int whetherClick()
 	return 0;
 }
 
-void MouseClick(int **uorgn, SDL_Point pos)
+int MouseClick(int **uorgn, SDL_Point pos)
 {
 	int row, col, ver_x = 0, hor_y = 0;
+	if (uorgn == NULL || pos.x<0 || pos.x>SCREEN_WIDTH ||pos.y<0 || pos.y>SCREEN_HEIGHT){
+		printf("Invalid int array or SDL_Point.\n");
+		return -1;
+	}
 	// Judge whether the cell has been clicked
 	for (row = 0; row < Maxrow; row++)
 	{
@@ -416,23 +446,26 @@ void MouseClick(int **uorgn, SDL_Point pos)
 	if (pos.y > 0 && pos.y < BUTTON_AREA)
 	{
 		gameState = UPLAYING;
-		return;
+		return 0;
 	}
+	return 0;
 }
 
 int whetherLast(SDL_Point pos, SDL_Rect rectup, SDL_Rect rectdown)
 {
-	char filename1[50] = "initstate.txt";
-	char filename2[50] = "state.txt";
+	char filename1[50] = "src/initstate.txt";
+	char filename2[50] = "src/state.txt";
+	//The up is contimue
 	if (SDL_PointInRect(&pos, &rectup))
 	{
-		load(filename1);
+		load(filename2);
 		gameState = FIRST;
 		return 1;
 	}
+	//The down is restart
 	if (SDL_PointInRect(&pos, &rectdown))
 	{
-		load(filename2);
+		load(filename1);
 		gameState = MODE;
 		return 2;
 	}
@@ -451,7 +484,7 @@ void loadIMG(SDL_Rect rect, const char *filename)
 	SDL_RenderCopy(gRenderer, gTexture, NULL, &rect);
 }
 
-void draw(bool ifSteps, int steps)
+void draw(bool ifSteps, int steps, int current)
 {
 	int chosen = 0;
 	// Initialize renderer color
@@ -505,24 +538,25 @@ void draw(bool ifSteps, int steps)
 	case PLAYING:
 		if (ifSteps == true)
 		{
-			int n = 0;
-			while (n < steps)
+			if (current<steps)
 			{
 				if (!judgeNext(orgn, ret))
 				{
-					printf("The state of the cells won't change anymore, the program will terminate.\n");
 					gameState = OVER;
 					return;
 				}
 				chess();
-				n++;
+				current++;
+			}
+			else{
+				printf("The game have already envolved %d times, the program will terminate", steps);
+				return;
 			}
 		}
 		if (ifSteps == false && steps == 0)
 		{
 			if (!judgeNext(orgn, ret))
 			{
-				printf("The state of the cells won't change anymore, the program will terminate.\n");
 				gameState = OVER;
 				return;
 			}
@@ -532,24 +566,25 @@ void draw(bool ifSteps, int steps)
 	case UPLAYING:
 		if (ifSteps == true)
 		{
-			int n = 0;
-			while (n < steps)
+			if (current<steps)
 			{
 				if (!judgeNext(uorgn, ret))
 				{
-					printf("The state of the cells won't change anymore, the program will terminate.\n");
 					gameState = OVER;
 					return;
 				}
 				chess();
-				n++;
+				current++;
+			}
+			else{
+				printf("The game have already envolved %d times, the program will terminate", steps);
+				return;
 			}
 		}
 		if (ifSteps == false && steps == 0)
 		{
 			if (!judgeNext(uorgn, ret))
 			{
-				printf("The state of the cells won't change anymore, the program will terminate.\n");
 				gameState = OVER;
 				return;
 			}
@@ -567,6 +602,7 @@ void draw(bool ifSteps, int steps)
 
 void eventLoop(bool ifSteps, int steps)
 {
+	int current = 0;
 	while (true)
 	{
 		SDL_Event event;
@@ -613,7 +649,7 @@ void eventLoop(bool ifSteps, int steps)
 				}
 			}
 		}
-		draw(ifSteps, steps);
+		draw(ifSteps, steps, current);
 
 		int end = SDL_GetTicks();
 		int time_ = end - begin;

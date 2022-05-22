@@ -12,5 +12,5 @@ $(objects): %.o : %.c
 
 .PHONY:clean
 clean:
-	rm -f *.o test
+	rm -f *.o *.txt test
 
